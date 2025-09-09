@@ -1,0 +1,39 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from 'process';
+import { BusinessModule } from './modules/business/business.module';
+import { ShopModule } from './modules/shop/shop.module';
+import { UsersModule } from './modules/users/users.module';
+import { CounterModule } from './modules/counter/counter.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.get('DB_HOST'),
+        port: parseInt(config.get('DB_PORT') as string),
+        username: config.get('DB_USERNAME'),
+        password: config.get('DB_PASSWORD'),
+        database: config.get('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true, // Set to false in production
+        autoLoadEntities: true,
+      }),
+    }),
+
+    BusinessModule,
+
+    ShopModule,
+
+    UsersModule,
+
+    CounterModule,
+  ],
+})
+export class AppModule {}
