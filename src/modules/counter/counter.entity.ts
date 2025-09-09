@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Shop } from '../shop/shop.entity';
 import { User } from '../users/user.entity';
+import { Shift } from '../shift/shift.entity';
 
 @Entity('counters')
 export class Counter {
@@ -46,7 +48,7 @@ export class Counter {
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'current_user_id' })
-  current_user: User;
+  current_user: User | null ;
 
   @Column({ default: 'CLOSED' })
   status: string;
@@ -69,4 +71,8 @@ export class Counter {
 
   @Column({ default: false })
   enable_gst_printing: boolean;
+
+  @OneToMany(() => Shift, (shift) => shift.counter)
+  shifts: Shift[];
+
 }

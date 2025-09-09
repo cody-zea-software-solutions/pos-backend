@@ -6,6 +6,10 @@ import { BusinessModule } from './modules/business/business.module';
 import { ShopModule } from './modules/shop/shop.module';
 import { UsersModule } from './modules/users/users.module';
 import { CounterModule } from './modules/counter/counter.module';
+import { ShiftModule } from './modules/shift/shift.module';
+import { ProductGroupModule } from './modules/product-group/product-group.module';
+import { ProductCategoryModule } from './modules/product-category/product-category.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +38,15 @@ import { CounterModule } from './modules/counter/counter.module';
     UsersModule,
 
     CounterModule,
+
+    ShiftModule,
+
+    ProductGroupModule,
+
+    ProductCategoryModule,
+
+    AuthModule,
+
   ],
 })
 export class AppModule {}

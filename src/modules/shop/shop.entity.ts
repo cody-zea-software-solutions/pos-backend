@@ -10,6 +10,7 @@ import {
 import { Business } from '../business/business.entity';
 import { User } from '../users/user.entity';
 import { Counter } from '../counter/counter.entity';
+import { Shift } from '../shift/shift.entity';
 
 @Entity('shops')
 export class Shop {
@@ -89,5 +90,7 @@ export class Shop {
   @OneToMany(() => Counter, (counter) => counter.shop, { cascade: true })
   counters: Counter[];
 
+  @OneToMany(() => Shift, (shift) => shift.shop)
+  shifts: Shift[];
 
 }

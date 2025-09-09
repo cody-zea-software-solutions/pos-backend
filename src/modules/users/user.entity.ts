@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Shop } from '../shop/shop.entity';
 import { Counter } from '../counter/counter.entity';
+import { Shift } from '../shift/shift.entity';
 
 @Entity('users')
 export class User {
@@ -80,5 +81,9 @@ export class User {
 
   @OneToMany(() => Counter, (counter) => counter.rollback_by_user)
   rollback_counters: Counter[];
+
+  @OneToMany(() => Shift, (shift) => shift.user)
+  shifts: Shift[];
+
 
 }

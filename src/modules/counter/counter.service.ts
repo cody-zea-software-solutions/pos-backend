@@ -34,14 +34,14 @@ export class CounterService {
             : null;
 
         const { shop, current_user, rollback_by_user, ...counterData } = dto;
-            
+
         const counter = this.counterRepo.create(counterData);
 
         counter.shop = assignedShop as Shop;
-        if (currentUser){
+        if (currentUser) {
             counter.current_user = currentUser as User;
         }
-        if(rollbackUser) {
+        if (rollbackUser) {
             counter.rollback_by_user = rollbackUser as User;
         }
 
@@ -84,4 +84,12 @@ export class CounterService {
         const counter = await this.findOne(id);
         await this.counterRepo.remove(counter);
     }
+
+    async findByCode(counterCode: string): Promise<Counter | null> {
+        return this.counterRepo.findOne({
+            where: { counter_code: counterCode },
+            relations: ['shop', 'current_user'],
+        });
+    }
+
 }
