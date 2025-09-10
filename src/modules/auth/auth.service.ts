@@ -49,7 +49,8 @@ export class AuthService {
 
     async logout(user: any) {
         if (user.role === 'cashier') {
-            await this.shiftService.endShiftForCashier(user); // auto end shift
+            console.log('Logout request user:', user);
+            await this.shiftService.endShiftForCashier(user.user_id); // auto end shift
         }
         return { message: 'Logged out successfully' };
     }

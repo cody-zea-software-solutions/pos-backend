@@ -43,4 +43,9 @@ export class ShiftController {
     remove(@Param('id', ParseIntPipe) id: number){
         return this.shiftService.remove(id);
     }
+
+    @Post(':id')
+    endShift(@Param('id', ParseIntPipe) id: number){
+        return this.shiftService.endShiftForCashier(id);
+    }
 }
