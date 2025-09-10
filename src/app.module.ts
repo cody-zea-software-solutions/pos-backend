@@ -10,6 +10,7 @@ import { ShiftModule } from './modules/shift/shift.module';
 import { ProductGroupModule } from './modules/product-group/product-group.module';
 import { ProductCategoryModule } from './modules/product-category/product-category.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CustomerModule } from './modules/customer/customer.module';
 
 @Module({
   imports: [
@@ -46,6 +47,8 @@ import { AuthModule } from './modules/auth/auth.module';
     ProductCategoryModule,
 
     AuthModule,
+
+    CustomerModule,
 
   ],
 })
