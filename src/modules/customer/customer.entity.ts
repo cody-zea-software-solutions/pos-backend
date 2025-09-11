@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+   OneToMany,
 } from 'typeorm';
+import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 
 export enum Gender {
   MALE = 'M',
@@ -95,4 +97,8 @@ export class Customer {
 
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   total_spent: number;
+
+  @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.customer)
+  loyaltyPoints: LoyaltyPoints[];
+
 }

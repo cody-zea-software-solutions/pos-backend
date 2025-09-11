@@ -11,6 +11,7 @@ import { Business } from '../business/business.entity';
 import { User } from '../users/user.entity';
 import { Counter } from '../counter/counter.entity';
 import { Shift } from '../shift/shift.entity';
+import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 
 @Entity('shops')
 export class Shop {
@@ -92,5 +93,7 @@ export class Shop {
 
   @OneToMany(() => Shift, (shift) => shift.shop)
   shifts: Shift[];
-
+ 
+  @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.shop)
+  loyaltyPoints: LoyaltyPoints[];
 }

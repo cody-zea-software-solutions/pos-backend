@@ -14,6 +14,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.module';
 
 import { LoyaltyRewardsModule } from './modules/loyalty-rewards/loyalty-rewards.module';
+import { LoyaltyPointsModule } from './modules/loyalty-points/loyalty-points.module';
 
 @Module({
   imports: [
@@ -56,6 +57,8 @@ import { LoyaltyRewardsModule } from './modules/loyalty-rewards/loyalty-rewards.
     LoyaltyLevelsModule,
 
     LoyaltyRewardsModule,
+
+    LoyaltyPointsModule,
 
   ],
 
