@@ -13,6 +13,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.module';
 
+import { LoyaltyRewardsModule } from './modules/loyalty-rewards/loyalty-rewards.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -53,6 +55,9 @@ import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.mod
 
     LoyaltyLevelsModule,
 
+    LoyaltyRewardsModule,
+
   ],
+
 })
 export class AppModule {}
