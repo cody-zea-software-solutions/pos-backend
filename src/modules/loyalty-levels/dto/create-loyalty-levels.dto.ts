@@ -1,6 +1,6 @@
 import { IsString, IsInt, IsDecimal,IsNumber, IsOptional, IsBoolean } from 'class-validator';
 
-export class CreateLoyaltyDto {
+export class CreateLoyaltyLevelsDto {
   @IsString()
   level_name: string;
 

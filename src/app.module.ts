@@ -11,7 +11,7 @@ import { ProductGroupModule } from './modules/product-group/product-group.module
 import { ProductCategoryModule } from './modules/product-category/product-category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CustomerModule } from './modules/customer/customer.module';
-import { LoyaltyModule } from './modules/loyalty/loyalty.module';
+import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.module';
 
 @Module({
   imports: [
@@ -51,7 +51,7 @@ import { LoyaltyModule } from './modules/loyalty/loyalty.module';
 
     CustomerModule,
 
-    LoyaltyModule,
+    LoyaltyLevelsModule,
 
   ],
 })
