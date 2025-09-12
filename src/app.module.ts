@@ -10,12 +10,14 @@ import { ShiftModule } from './modules/shift/shift.module';
 import { ProductGroupModule } from './modules/product-group/product-group.module';
 import { ProductCategoryModule } from './modules/product-category/product-category.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { CustomerModule } from './modules/customer/customer.module';
-import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.module';
 
-import { LoyaltyRewardsModule } from './modules/loyalty-rewards/loyalty-rewards.module';
-import { LoyaltyPointsModule } from './modules/loyalty-points/loyalty-points.module';
+import { CustomerModule } from './modules/loyalty-management/customer/customer.module';
+import { LoyaltyLevelsModule } from './modules/loyalty-management/loyalty-levels/loyalty-levels.module';
+
+import { LoyaltyRewardsModule } from './modules/loyalty-management/loyalty-rewards/loyalty-rewards.module';
+import { LoyaltyPointsModule } from './modules/loyalty-management/loyalty-points/loyalty-points.module';
 import { ProductSubcategoryModule } from './modules/product-subcategory/product-subcategory.module';
+import { CustomerRewardsModule } from './modules/loyalty-management/customer-rewards/customer-rewards.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { ProductSubcategoryModule } from './modules/product-subcategory/product-
     LoyaltyPointsModule,
 
     ProductSubcategoryModule,
+
+    CustomerRewardsModule,
 
   ],
 

@@ -6,29 +6,41 @@ import {
   JoinColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { Shop } from '../shop/shop.entity';
+import { Shop } from '../../shop/shop.entity';
 import { Customer } from '../customer/customer.entity';
-import { Counter } from '../counter/counter.entity';
-import { User } from '../users/user.entity';
+import { Counter } from '../../counter/counter.entity';
+import { User } from '../../users/user.entity';
 
 @Entity({ name: 'loyalty_points' })
 export class LoyaltyPoints {
   @PrimaryGeneratedColumn()
   point_id: number;
 
-  @ManyToOne(() => Customer, (customer) => customer.loyaltyPoints, { eager: true })
+  @ManyToOne(() => Customer, (customer) => customer.loyaltyPoints, {
+    eager: true,
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @ManyToOne(() => Shop, (shop) => shop.loyaltyPoints, { eager: true })
+  @ManyToOne(() => Shop, (shop) => shop.loyaltyPoints, {
+    eager: true,
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'shop_id' })
   shop: Shop;
 
-  @ManyToOne(() => Counter, (counter) => counter.loyaltyPoints, { eager: true })
+  @ManyToOne(() => Counter, (counter) => counter.loyaltyPoints, {
+    eager: true,
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'counter_id' })
   counter: Counter;
 
-  @ManyToOne(() => User, (user) => user.createdLoyaltyPoints, { eager: true })
+  @ManyToOne(() => User, (user) => user.createdLoyaltyPoints, {
+    eager: true,
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'created_by_user' })
   createdBy: User;
 
@@ -48,13 +60,11 @@ export class LoyaltyPoints {
   transaction_date: Date;
 
   @Column({ type: 'text', nullable: true })
-  description: string;
+  description: string | null;
 
-  @Column({ nullable: true })
-  expiry_date: Date;
+  @Column({ type: 'date', nullable: true })
+  expiry_date: Date | null;
 
   @Column({ type: 'boolean', default: true })
   is_active: boolean;
-
-  
 }

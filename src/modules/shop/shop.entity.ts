@@ -11,7 +11,7 @@ import { Business } from '../business/business.entity';
 import { User } from '../users/user.entity';
 import { Counter } from '../counter/counter.entity';
 import { Shift } from '../shift/shift.entity';
-import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
+import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 
 @Entity('shops')
 export class Shop {

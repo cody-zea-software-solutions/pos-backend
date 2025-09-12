@@ -10,7 +10,7 @@ import {
 import { Shop } from '../shop/shop.entity';
 import { User } from '../users/user.entity';
 import { Shift } from '../shift/shift.entity';
-import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
+import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 
 @Entity('counters')
 export class Counter {

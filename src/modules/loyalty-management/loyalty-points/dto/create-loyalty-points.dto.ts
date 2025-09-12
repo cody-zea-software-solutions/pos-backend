@@ -38,7 +38,7 @@ export class CreateLoyaltyPointsDto {
 
   @IsOptional()
   @IsDateString()
-  expiry_date:Date;
+  expiry_date?:string;
 
   @IsOptional()
   @IsBoolean()
