@@ -15,6 +15,7 @@ import { LoyaltyLevelsModule } from './modules/loyalty-levels/loyalty-levels.mod
 
 import { LoyaltyRewardsModule } from './modules/loyalty-rewards/loyalty-rewards.module';
 import { LoyaltyPointsModule } from './modules/loyalty-points/loyalty-points.module';
+import { ProductSubcategoryModule } from './modules/product-subcategory/product-subcategory.module';
 
 @Module({
   imports: [
@@ -59,6 +60,8 @@ import { LoyaltyPointsModule } from './modules/loyalty-points/loyalty-points.mod
     LoyaltyRewardsModule,
 
     LoyaltyPointsModule,
+
+    ProductSubcategoryModule,
 
   ],
 
