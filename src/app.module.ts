@@ -18,6 +18,7 @@ import { LoyaltyRewardsModule } from './modules/loyalty-management/loyalty-rewar
 import { LoyaltyPointsModule } from './modules/loyalty-management/loyalty-points/loyalty-points.module';
 import { ProductSubcategoryModule } from './modules/product-subcategory/product-subcategory.module';
 import { CustomerRewardsModule } from './modules/loyalty-management/customer-rewards/customer-rewards.module';
+import { ProductUnitsModule } from './modules/product-units/product-units.module';
 
 @Module({
   imports: [
@@ -66,6 +67,8 @@ import { CustomerRewardsModule } from './modules/loyalty-management/customer-rew
     ProductSubcategoryModule,
 
     CustomerRewardsModule,
+
+    ProductUnitsModule,
 
   ],
 

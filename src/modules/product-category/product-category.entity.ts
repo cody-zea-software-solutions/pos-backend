@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ProductGroup } from '../product-group/product-group.entity';
+import { ProductSubcategory } from '../product-subcategory/product-subcategory.entity';
 
 @Entity('product_categories')
 export class ProductCategory {
@@ -54,4 +55,8 @@ export class ProductCategory {
 
   @Column('decimal', { precision: 5, scale: 2, nullable: true })
   default_gst_rate: number;
+
+  @OneToMany(() => ProductSubcategory, (sub) => sub.category)
+  subcategories: ProductSubcategory[];
+
 }
