@@ -7,7 +7,7 @@ import {
    OneToMany,
 } from 'typeorm';
 import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
-
+import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
 export enum Gender {
   MALE = 'M',
   FEMALE = 'F',
@@ -100,5 +100,7 @@ export class Customer {
 
   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.customer)
   loyaltyPoints: LoyaltyPoints[];
+   @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.customer)
+  customerRewards:CustomerRewards[];
 
 }

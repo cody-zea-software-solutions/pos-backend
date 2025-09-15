@@ -11,7 +11,7 @@ import { Shop } from '../shop/shop.entity';
 import { User } from '../users/user.entity';
 import { Shift } from '../shift/shift.entity';
 import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
-
+import { CustomerRewards } from '../loyalty-management/customer-rewards/customer-rewards.entity';
 @Entity('counters')
 export class Counter {
   @PrimaryGeneratedColumn()
@@ -78,4 +78,7 @@ export class Counter {
   
    @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.counter)
   loyaltyPoints: LoyaltyPoints[];
+
+  @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.counter)
+    customerRewards:CustomerRewards[];
 }

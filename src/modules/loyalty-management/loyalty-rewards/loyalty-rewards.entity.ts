@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
 @Entity('loyalty_rewards')
 export class LoyaltyReward {
   @PrimaryGeneratedColumn()
@@ -43,4 +43,7 @@ export class LoyaltyReward {
 
   @CreateDateColumn()
   created_at: Date;
+
+    @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.reward)
+    customerRewards:CustomerRewards[];
 }
