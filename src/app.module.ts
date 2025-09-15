@@ -7,8 +7,6 @@ import { ShopModule } from './modules/shop/shop.module';
 import { UsersModule } from './modules/users/users.module';
 import { CounterModule } from './modules/counter/counter.module';
 import { ShiftModule } from './modules/shift/shift.module';
-import { ProductGroupModule } from './modules/product-group/product-group.module';
-import { ProductCategoryModule } from './modules/product-category/product-category.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 import { CustomerModule } from './modules/loyalty-management/customer/customer.module';
@@ -16,9 +14,11 @@ import { LoyaltyLevelsModule } from './modules/loyalty-management/loyalty-levels
 
 import { LoyaltyRewardsModule } from './modules/loyalty-management/loyalty-rewards/loyalty-rewards.module';
 import { LoyaltyPointsModule } from './modules/loyalty-management/loyalty-points/loyalty-points.module';
-import { ProductSubcategoryModule } from './modules/product-subcategory/product-subcategory.module';
 import { CustomerRewardsModule } from './modules/loyalty-management/customer-rewards/customer-rewards.module';
-import { ProductUnitsModule } from './modules/product-units/product-units.module';
+import { ProductGroupModule } from './modules/product-management/product-group/product-group.module';
+import { ProductCategoryModule } from './modules/product-management/product-category/product-category.module';
+import { ProductSubcategoryModule } from './modules/product-management/product-subcategory/product-subcategory.module';
+import { ProductUnitsModule } from './modules/product-management/product-units/product-units.module';
 
 @Module({
   imports: [
