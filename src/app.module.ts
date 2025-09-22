@@ -19,6 +19,8 @@ import { ProductGroupModule } from './modules/product-management/product-group/p
 import { ProductCategoryModule } from './modules/product-management/product-category/product-category.module';
 import { ProductSubcategoryModule } from './modules/product-management/product-subcategory/product-subcategory.module';
 import { ProductUnitsModule } from './modules/product-management/product-units/product-units.module';
+import { ConsignorModule } from './modules/inventory/consignor/consignor.module';
+import { ProductModule } from './modules/product-management/product/product.module';
 
 @Module({
   imports: [
@@ -69,6 +71,10 @@ import { ProductUnitsModule } from './modules/product-management/product-units/p
     CustomerRewardsModule,
 
     ProductUnitsModule,
+
+    ConsignorModule,
+
+    ProductModule,
 
   ],
 

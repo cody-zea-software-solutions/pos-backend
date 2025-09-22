@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
+import { Product } from '../product/product.entity';
 
 @Entity('product_units')
 export class ProductUnit {
@@ -34,4 +36,7 @@ export class ProductUnit {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @OneToMany(() => Product, (product) => product.unit)
+  products: Product[];
 }

@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { ProductCategory } from '../product-category/product-category.entity';
+import { Product } from '../product/product.entity';
 
 @Entity('product_subcategories')
 export class ProductSubcategory {
@@ -42,4 +44,7 @@ export class ProductSubcategory {
 
   @Column('decimal', { precision: 5, scale: 2, nullable: true })
   default_gst_rate: number;
+
+  @OneToMany(() => Product, (product) => product.subcategory)
+  products: Product[];
 }
