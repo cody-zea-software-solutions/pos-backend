@@ -6,12 +6,14 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ProductGroup } from '../product-group/product-group.entity';
 import { ProductUnit } from '../product-units/product-unit.entity';
 import { ProductCategory } from '../product-category/product-category.entity';
 import { ProductSubcategory } from '../product-subcategory/product-subcategory.entity';
 import { Consignor } from 'src/modules/inventory/consignor/consignor.entity';
+import { ProductVariation } from '../product-variation/product-variation.entity';
 
 @Entity('products')
 export class Product {
@@ -121,6 +123,11 @@ export class Product {
 
   @Column({ default: false })
   enable_multi_branch_pricing: boolean;
+
+  @OneToMany(() => ProductVariation, (variation) => variation.product, {
+    cascade: true, // optional: saves variations when saving product
+  })
+  variations: ProductVariation[];
 
   // Default pricing group relation → will implement later
   @Column({ nullable: true })

@@ -21,6 +21,8 @@ import { ProductSubcategoryModule } from './modules/product-management/product-s
 import { ProductUnitsModule } from './modules/product-management/product-units/product-units.module';
 import { ConsignorModule } from './modules/inventory/consignor/consignor.module';
 import { ProductModule } from './modules/product-management/product/product.module';
+import { ProductVariationModule } from './modules/product-management/product-variation/product-variation.module';
+import { SupplierModule } from './modules/inventory/supplier/supplier.module';
 
 @Module({
   imports: [
@@ -75,6 +77,10 @@ import { ProductModule } from './modules/product-management/product/product.modu
     ConsignorModule,
 
     ProductModule,
+
+    ProductVariationModule,
+
+    SupplierModule,
 
   ],
 
