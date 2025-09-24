@@ -12,6 +12,7 @@ import { User } from '../users/user.entity';
 import { Shift } from '../shift/shift.entity';
 import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../loyalty-management/customer-rewards/customer-rewards.entity';
+import { Promotion } from '../promotion/promotion.entity';
 @Entity('counters')
 export class Counter {
   @PrimaryGeneratedColumn()
@@ -49,7 +50,7 @@ export class Counter {
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'current_user_id' })
-  current_user: User | null ;
+  current_user: User | null;
 
   @Column({ default: 'CLOSED' })
   status: string;
@@ -75,10 +76,13 @@ export class Counter {
 
   @OneToMany(() => Shift, (shift) => shift.counter)
   shifts: Shift[];
-  
-   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.counter)
+
+  @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.counter)
   loyaltyPoints: LoyaltyPoints[];
 
   @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.counter)
-    customerRewards:CustomerRewards[];
+  customerRewards: CustomerRewards[];
+
+  @OneToMany(() => Promotion, (promotion) => promotion.counter)
+  promotions: Promotion[];
 }

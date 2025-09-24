@@ -23,6 +23,8 @@ import { ConsignorModule } from './modules/inventory/consignor/consignor.module'
 import { ProductModule } from './modules/product-management/product/product.module';
 import { ProductVariationModule } from './modules/product-management/product-variation/product-variation.module';
 import { SupplierModule } from './modules/inventory/supplier/supplier.module';
+import { DiscountModule } from './modules/discount/discount.module';
+import { PromotionModule } from './modules/promotion/promotion.module';
 
 @Module({
   imports: [
@@ -81,6 +83,10 @@ import { SupplierModule } from './modules/inventory/supplier/supplier.module';
     ProductVariationModule,
 
     SupplierModule,
+
+    DiscountModule,
+
+    PromotionModule,
 
   ],
 

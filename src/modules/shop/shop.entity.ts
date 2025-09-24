@@ -13,6 +13,7 @@ import { Counter } from '../counter/counter.entity';
 import { Shift } from '../shift/shift.entity';
 import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../loyalty-management/customer-rewards/customer-rewards.entity';
+import { Promotion } from '../promotion/promotion.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -93,9 +94,13 @@ export class Shop {
 
   @OneToMany(() => Shift, (shift) => shift.shop)
   shifts: Shift[];
- 
+
   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.shop)
   loyaltyPoints: LoyaltyPoints[];
-   @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.shop)
-    customerRewards:CustomerRewards[];
+
+  @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.shop)
+  customerRewards: CustomerRewards[];
+
+  @OneToMany(() => Promotion, (promotion) => promotion.shop)
+  promotions: Promotion[];
 }
