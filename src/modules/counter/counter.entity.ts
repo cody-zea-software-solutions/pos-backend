@@ -13,6 +13,8 @@ import { Shift } from '../shift/shift.entity';
 import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../loyalty-management/customer-rewards/customer-rewards.entity';
 import { Promotion } from '../promotion/promotion.entity';
+import { Transaction } from '../pos-transactions/transactions/transaction.entity';
+import { Refund } from '../refund-process/refund/refund.entity';
 @Entity('counters')
 export class Counter {
   @PrimaryGeneratedColumn()
@@ -85,4 +87,11 @@ export class Counter {
 
   @OneToMany(() => Promotion, (promotion) => promotion.counter)
   promotions: Promotion[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.shop)
+  transactions: Transaction[];
+
+  @OneToMany(() => Refund, (refund) => refund.counter)
+  refunds: Refund[];
+
 }

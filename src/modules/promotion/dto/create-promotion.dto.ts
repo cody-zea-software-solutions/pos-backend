@@ -1,9 +1,11 @@
+import { Type } from 'class-transformer';
 import {
   IsString,
   IsOptional,
   IsBoolean,
   IsDateString,
   IsNumber,
+  IsDate,
 } from 'class-validator';
 
 export class CreatePromotionDto {
@@ -17,11 +19,15 @@ export class CreatePromotionDto {
   @IsString()
   promotion_type: string;
 
-  @IsDateString()
-  start_date: Date;
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  start_date?: Date;
 
-  @IsDateString()
-  end_date: Date;
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  end_date?: Date;
 
   @IsOptional()
   @IsString()

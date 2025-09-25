@@ -14,6 +14,8 @@ import { ProductCategory } from '../product-category/product-category.entity';
 import { ProductSubcategory } from '../product-subcategory/product-subcategory.entity';
 import { Consignor } from 'src/modules/inventory/consignor/consignor.entity';
 import { ProductVariation } from '../product-variation/product-variation.entity';
+import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
+import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
 
 @Entity('products')
 export class Product {
@@ -128,6 +130,12 @@ export class Product {
     cascade: true, // optional: saves variations when saving product
   })
   variations: ProductVariation[];
+
+  @OneToMany(() => TransactionItem, (item) => item.product)
+  transactionItems: TransactionItem[];
+
+  @OneToMany(() => RefundItem, (item) => item.product)
+  refund_items: RefundItem[];
 
   // Default pricing group relation → will implement later
   @Column({ nullable: true })

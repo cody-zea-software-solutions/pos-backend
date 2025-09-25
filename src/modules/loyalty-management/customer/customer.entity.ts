@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-   OneToMany,
+  OneToMany,
 } from 'typeorm';
 import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
+import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
+import { Refund } from 'src/modules/refund-process/refund/refund.entity';
 export enum Gender {
   MALE = 'M',
   FEMALE = 'F',
@@ -52,11 +54,11 @@ export class Customer {
   @Column({ type: 'text', nullable: true })
   address: string | null;
 
-  @Column({  nullable: true })
-  city: string ;
+  @Column({ nullable: true })
+  city: string;
 
-  @Column({  nullable: true })
-  postal_code: string ;
+  @Column({ nullable: true })
+  postal_code: string;
 
   @Column({ nullable: true })
   gst_number: string;
@@ -73,7 +75,7 @@ export class Customer {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-  
+
   @Column({ default: true })
   is_active: boolean;
 
@@ -87,10 +89,10 @@ export class Customer {
   last_scan: Date | null;
 
   @Column({ nullable: true })
-  preferred_shop: string ;
+  preferred_shop: string;
 
   @Column({ nullable: true })
-  preferred_counter: string ;
+  preferred_counter: string;
 
   @Column({ type: 'int', default: 0 })
   total_visits: number;
@@ -100,7 +102,14 @@ export class Customer {
 
   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.customer)
   loyaltyPoints: LoyaltyPoints[];
-   @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.customer)
-  customerRewards:CustomerRewards[];
+
+  @OneToMany(() => CustomerRewards, (customerRewards) => customerRewards.customer)
+  customerRewards: CustomerRewards[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.shop)
+  transactions: Transaction[];
+
+  @OneToMany(() => Refund, (refund) => refund.customer)
+  refunds: Refund[];
 
 }

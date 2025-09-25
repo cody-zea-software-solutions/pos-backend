@@ -24,10 +24,10 @@ export class Promotion {
   @Column()
   promotion_type: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'datetime', nullable: true })
   start_date: Date;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'datetime', nullable: true })
   end_date: Date;
 
   @Column({ nullable: true })

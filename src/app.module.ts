@@ -25,6 +25,12 @@ import { ProductVariationModule } from './modules/product-management/product-var
 import { SupplierModule } from './modules/inventory/supplier/supplier.module';
 import { DiscountModule } from './modules/discount/discount.module';
 import { PromotionModule } from './modules/promotion/promotion.module';
+import { TransactionsModule } from './modules/pos-transactions/transactions/transactions.module';
+import { TransactionItemsModule } from './modules/pos-transactions/transaction-items/transaction-items.module';
+import { PaymentsModule } from './modules/pos-transactions/payments/payments.module';
+import { RefundModule } from './modules/refund-process/refund/refund.module';
+import { RefundItemsModule } from './modules/refund-process/refund-items/refund-items.module';
+import { RefundApprovalsModule } from './modules/refund-process/refund-approvals/refund-approvals.module';
 
 @Module({
   imports: [
@@ -87,6 +93,18 @@ import { PromotionModule } from './modules/promotion/promotion.module';
     DiscountModule,
 
     PromotionModule,
+
+    TransactionsModule,
+
+    TransactionItemsModule,
+
+    PaymentsModule,
+
+    RefundModule,
+
+    RefundItemsModule,
+
+    RefundApprovalsModule,
 
   ],
 

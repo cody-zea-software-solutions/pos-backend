@@ -5,8 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Product } from '../product/product.entity';
+import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
+import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
 
 @Entity('product_variations')
 export class ProductVariation {
@@ -60,4 +63,11 @@ export class ProductVariation {
 
   @Column({ default: true })
   inherit_parent_gst: boolean;
+
+  @OneToMany(() => TransactionItem, (item) => item.variation)
+  transactionItems: TransactionItem[];
+
+  @OneToMany(() => RefundItem, (item) => item.variation)
+  refund_items: RefundItem[];
+
 }

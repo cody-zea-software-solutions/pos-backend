@@ -13,6 +13,9 @@ import { Shift } from '../shift/shift.entity';
 import { LoyaltyPoints } from '../loyalty-management/loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../loyalty-management/customer-rewards/customer-rewards.entity';
 import { Promotion } from '../promotion/promotion.entity';
+import { Transaction } from '../pos-transactions/transactions/transaction.entity';
+import { Refund } from '../refund-process/refund/refund.entity';
+import { RefundApproval } from '../refund-process/refund-approvals/refund-approval.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -95,4 +98,17 @@ export class User {
 
   @OneToMany(() => Promotion, (promotion) => promotion.created_by)
   promotions: Promotion[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.shop)
+  transactions: Transaction[];
+
+  @OneToMany(() => Refund, (refund) => refund.processed_by)
+  processed_refunds: Refund[];
+
+  @OneToMany(() => Refund, (refund) => refund.authorized_by)
+  authorized_refunds: Refund[];
+
+  @OneToMany(() => RefundApproval, (approval) => approval.approver)
+  refund_approvals: RefundApproval[];
+
 }

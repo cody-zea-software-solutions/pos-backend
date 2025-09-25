@@ -1,4 +1,6 @@
+import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
 import { Product } from 'src/modules/product-management/product/product.entity';
+import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -53,4 +55,11 @@ export class Consignor {
 
   @OneToMany(() => Product, (product) => product.consignor)
   products: Product[];
+
+  @OneToMany(() => TransactionItem, (item) => item.consignor)
+  transactionItems: TransactionItem[];
+
+  @OneToMany(() => RefundItem, (item) => item.consignor)
+  refund_items: RefundItem[];
+
 }
