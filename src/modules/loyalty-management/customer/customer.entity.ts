@@ -10,6 +10,7 @@ import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
 import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../../refund-process/refund/refund.entity';
+import { GiftCard } from 'src/modules/gift-cards/gift-card.entity';
 export enum Gender {
   MALE = 'M',
   FEMALE = 'F',
@@ -111,5 +112,8 @@ export class Customer {
 
   @OneToMany(() => Refund, (refund) => refund.customer)
   refunds: Refund[];
+
+  @OneToMany(() => GiftCard, (giftCard) => giftCard.issued_to)
+  gift_cards: GiftCard[];
 
 }

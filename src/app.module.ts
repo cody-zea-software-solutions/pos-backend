@@ -31,6 +31,8 @@ import { PaymentsModule } from './modules/pos-transactions/payments/payments.mod
 import { RefundModule } from './modules/refund-process/refund/refund.module';
 import { RefundItemsModule } from './modules/refund-process/refund-items/refund-items.module';
 import { RefundApprovalsModule } from './modules/refund-process/refund-approvals/refund-approvals.module';
+import { ServicesModule } from './modules/service-management/services/services.module';
+import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
 
 @Module({
   imports: [
@@ -105,6 +107,10 @@ import { RefundApprovalsModule } from './modules/refund-process/refund-approvals
     RefundItemsModule,
 
     RefundApprovalsModule,
+
+    ServicesModule,
+
+    GiftCardsModule,
 
   ],
 

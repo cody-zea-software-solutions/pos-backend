@@ -16,6 +16,7 @@ import { Promotion } from '../promotion/promotion.entity';
 import { Transaction } from '../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../refund-process/refund/refund.entity';
 import { RefundApproval } from '../refund-process/refund-approvals/refund-approval.entity';
+import { GiftCard } from '../gift-cards/gift-card.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -110,5 +111,8 @@ export class User {
 
   @OneToMany(() => RefundApproval, (approval) => approval.approver)
   refund_approvals: RefundApproval[];
+
+  @OneToMany(() => GiftCard, (giftCard) => giftCard.issued_by)
+  issued_gift_cards: GiftCard[];
 
 }
