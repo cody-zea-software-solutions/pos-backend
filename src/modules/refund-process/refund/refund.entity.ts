@@ -1,8 +1,8 @@
-import { Counter } from 'src/modules/counter/counter.entity';
-import { Customer } from 'src/modules/loyalty-management/customer/customer.entity';
-import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
-import { Shop } from 'src/modules/shop/shop.entity';
-import { User } from 'src/modules/users/user.entity';
+import { Counter } from '../../counter/counter.entity';
+import { Customer } from '../../loyalty-management/customer/customer.entity';
+import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
+import { Shop } from '../../shop/shop.entity';
+import { User } from '../../users/user.entity';
 import {
     Entity,
     PrimaryGeneratedColumn,

@@ -1,6 +1,6 @@
-import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
-import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
+import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
+import { Product } from '../../product-management/product/product.entity';
+import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

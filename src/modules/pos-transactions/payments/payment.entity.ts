@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { Transaction } from '../transactions/transaction.entity';
-import { User } from 'src/modules/users/user.entity';
+import { User } from '../../users/user.entity';
 
 @Entity('payments')
 export class Payment {

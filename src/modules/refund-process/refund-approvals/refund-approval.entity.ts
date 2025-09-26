@@ -7,7 +7,7 @@ import {
     CreateDateColumn,
 } from 'typeorm';
 import { Refund } from '../refund/refund.entity';
-import { User } from 'src/modules/users/user.entity';
+import { User } from '../../users/user.entity';
 
 export enum ApprovalStatus {
     APPROVED = 'APPROVED',

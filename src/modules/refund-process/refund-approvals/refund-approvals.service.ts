@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RefundApproval } from './refund-approval.entity';
 import { Repository } from 'typeorm';
 import { RefundService } from '../refund/refund.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { CreateRefundApprovalDto } from './dto/create-refund-approval.dto';
 
 @Injectable()

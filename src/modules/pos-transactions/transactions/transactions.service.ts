@@ -2,10 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './transaction.entity';
 import { Repository } from 'typeorm';
-import { ShopService } from 'src/modules/shop/shop.service';
-import { CounterService } from 'src/modules/counter/counter.service';
-import { CustomerService } from 'src/modules/loyalty-management/customer/customer.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { ShopService } from '../../shop/shop.service';
+import { CounterService } from '../../counter/counter.service';
+import { CustomerService } from '../../loyalty-management/customer/customer.service';
+import { UsersService } from '../../users/users.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Injectable()

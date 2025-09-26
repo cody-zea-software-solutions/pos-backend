@@ -8,7 +8,7 @@ import { ProductGroupService } from '../product-group/product-group.service';
 import { ProductCategoryService } from '../product-category/product-category.service';
 import { ProductSubcategoryService } from '../product-subcategory/product-subcategory.service';
 import { ProductUnitsService } from '../product-units/product-units.service';
-import { ConsignorService } from 'src/modules/inventory/consignor/consignor.service';
+import { ConsignorService } from '../../inventory/consignor/consignor.service';
 
 @Injectable()
 export class ProductService {

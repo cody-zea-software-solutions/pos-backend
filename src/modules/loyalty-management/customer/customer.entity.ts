@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
-import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
-import { Refund } from 'src/modules/refund-process/refund/refund.entity';
+import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
+import { Refund } from '../../refund-process/refund/refund.entity';
 export enum Gender {
   MALE = 'M',
   FEMALE = 'F',

@@ -7,10 +7,10 @@ import {
     OneToMany,
 } from 'typeorm';
 import { Transaction } from '../transactions/transaction.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
-import { ProductVariation } from 'src/modules/product-management/product-variation/product-variation.entity';
-import { Consignor } from 'src/modules/inventory/consignor/consignor.entity';
-import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
+import { Product } from '../../product-management/product/product.entity';
+import { ProductVariation } from '../../product-management/product-variation/product-variation.entity';
+import { Consignor } from '../../inventory/consignor/consignor.entity';
+import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
 
 @Entity('transaction_items')
 export class TransactionItem {

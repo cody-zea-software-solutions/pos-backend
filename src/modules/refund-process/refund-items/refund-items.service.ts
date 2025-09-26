@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RefundItem } from './refund-item.entity';
 import { Repository } from 'typeorm';
 import { RefundService } from '../refund/refund.service';
-import { TransactionsService } from 'src/modules/pos-transactions/transactions/transactions.service';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
-import { ConsignorService } from 'src/modules/inventory/consignor/consignor.service';
+import { TransactionsService } from '../../pos-transactions/transactions/transactions.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
+import { ConsignorService } from '../../inventory/consignor/consignor.service';
 import { CreateRefundItemDto } from './dto/create-refund-item.dto';
-import { TransactionItemsService } from 'src/modules/pos-transactions/transaction-items/transaction-items.service';
+import { TransactionItemsService } from '../../pos-transactions/transaction-items/transaction-items.service';
 
 @Injectable()
 export class RefundItemsService {

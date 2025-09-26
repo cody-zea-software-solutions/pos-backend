@@ -12,10 +12,10 @@ import { ProductGroup } from '../product-group/product-group.entity';
 import { ProductUnit } from '../product-units/product-unit.entity';
 import { ProductCategory } from '../product-category/product-category.entity';
 import { ProductSubcategory } from '../product-subcategory/product-subcategory.entity';
-import { Consignor } from 'src/modules/inventory/consignor/consignor.entity';
+import { Consignor } from '../../inventory/consignor/consignor.entity';
 import { ProductVariation } from '../product-variation/product-variation.entity';
-import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
-import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
+import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
+import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
 
 @Entity('products')
 export class Product {

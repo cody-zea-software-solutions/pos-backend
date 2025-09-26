@@ -1,7 +1,7 @@
-import { Counter } from 'src/modules/counter/counter.entity';
-import { Customer } from 'src/modules/loyalty-management/customer/customer.entity';
-import { Shop } from 'src/modules/shop/shop.entity';
-import { User } from 'src/modules/users/user.entity';
+import { Counter } from '../../counter/counter.entity';
+import { Customer } from '../../loyalty-management/customer/customer.entity';
+import { Shop } from '../../shop/shop.entity';
+import { User } from '../../users/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { TransactionItem } from '../transaction-items/transaction-item.entity';
 import { Payment } from '../payments/payment.entity';
-import { Refund } from 'src/modules/refund-process/refund/refund.entity';
+import { Refund } from '../../refund-process/refund/refund.entity';
 
 @Entity('transactions')
 export class Transaction {

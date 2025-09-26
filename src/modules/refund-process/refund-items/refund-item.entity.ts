@@ -6,10 +6,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Refund } from '../refund/refund.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
-import { ProductVariation } from 'src/modules/product-management/product-variation/product-variation.entity';
-import { Consignor } from 'src/modules/inventory/consignor/consignor.entity';
-import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
+import { Product } from '../../product-management/product/product.entity';
+import { ProductVariation } from '../../product-management/product-variation/product-variation.entity';
+import { Consignor } from '../../inventory/consignor/consignor.entity';
+import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
 
 export enum ItemCondition {
   NEW = 'NEW',

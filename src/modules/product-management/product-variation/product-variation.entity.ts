@@ -8,8 +8,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Product } from '../product/product.entity';
-import { TransactionItem } from 'src/modules/pos-transactions/transaction-items/transaction-item.entity';
-import { RefundItem } from 'src/modules/refund-process/refund-items/refund-item.entity';
+import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
+import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
 
 @Entity('product_variations')
 export class ProductVariation {

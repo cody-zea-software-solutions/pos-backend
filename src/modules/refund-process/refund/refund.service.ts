@@ -2,11 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Refund } from './refund.entity';
 import { Repository } from 'typeorm';
-import { TransactionsService } from 'src/modules/pos-transactions/transactions/transactions.service';
-import { ShopService } from 'src/modules/shop/shop.service';
-import { CounterService } from 'src/modules/counter/counter.service';
-import { CustomerService } from 'src/modules/loyalty-management/customer/customer.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { TransactionsService } from '../../pos-transactions/transactions/transactions.service';
+import { ShopService } from '../../shop/shop.service';
+import { CounterService } from '../../counter/counter.service';
+import { CustomerService } from '../../loyalty-management/customer/customer.service';
+import { UsersService } from '../../users/users.service';
 import { CreateRefundDto } from './dto/create-refund.dto';
 
 @Injectable()

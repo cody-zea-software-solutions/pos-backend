@@ -4,9 +4,9 @@ import { TransactionItem } from './transaction-item.entity';
 import { Repository } from 'typeorm';
 import { CreateTransactionItemDto } from './dto/create-transaction-item.dto';
 import { TransactionsService } from '../transactions/transactions.service';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
-import { ConsignorService } from 'src/modules/inventory/consignor/consignor.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
+import { ConsignorService } from '../../inventory/consignor/consignor.service';
 
 @Injectable()
 export class TransactionItemsService {
