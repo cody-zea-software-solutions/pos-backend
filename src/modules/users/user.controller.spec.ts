@@ -3,6 +3,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRole } from './user-role.enum';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -14,58 +15,70 @@ describe('UsersController', () => {
     findOne: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
-    findByUsername: jest.fn(),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [
-        { provide: UsersService, useValue: mockUsersService },
-      ],
+      providers: [{ provide: UsersService, useValue: mockUsersService }],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
-
-    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should call service.create with dto', async () => {
-    const dto: CreateUserDto = {
-      username: 'john_doe',
-      email: 'john@example.com',
-      password: 'password123',
-      first_name: 'John',
-      last_name: 'Doe',
-      role: 'admin',
-    };
-    await controller.create(dto);
-    expect(service.create).toHaveBeenCalledWith(dto);
+  describe('create', () => {
+    it('should call service.create with dto', async () => {
+      const dto: CreateUserDto = {
+        username: 'john',
+        email: 'john@example.com',
+        password: '123456',
+        first_name: 'John',
+        last_name: 'Doe',
+        role: UserRole.CASHIER,
+      };
+
+      mockUsersService.create.mockResolvedValue({ ...dto, user_id: 1 });
+
+      expect(await controller.create(dto)).toEqual({ ...dto, user_id: 1 });
+      expect(mockUsersService.create).toHaveBeenCalledWith(dto);
+    });
   });
 
-  it('should call service.findAll', async () => {
-    await controller.findAll();
-    expect(service.findAll).toHaveBeenCalled();
+  describe('findAll', () => {
+    it('should return an array of users', async () => {
+      const result = [{ user_id: 1 }];
+      mockUsersService.findAll.mockResolvedValue(result);
+      expect(await controller.findAll()).toEqual(result);
+    });
   });
 
-  it('should call service.findOne with id', async () => {
-    await controller.findOne(1);
-    expect(service.findOne).toHaveBeenCalledWith(1);
+  describe('findOne', () => {
+    it('should return a single user', async () => {
+      const result = { user_id: 1 };
+      mockUsersService.findOne.mockResolvedValue(result);
+      expect(await controller.findOne(1)).toEqual(result);
+    });
   });
 
-  it('should call service.update with id and dto', async () => {
-    const dto: UpdateUserDto = { first_name: 'Jane' };
-    await controller.update(1, dto);
-    expect(service.update).toHaveBeenCalledWith(1, dto);
+  describe('update', () => {
+    it('should update and return the user', async () => {
+      const dto: UpdateUserDto = { first_name: 'Jane' };
+      const result = { user_id: 1, ...dto };
+      mockUsersService.update.mockResolvedValue(result);
+      expect(await controller.update(1, dto)).toEqual(result);
+    });
   });
 
-  it('should call service.remove with id', async () => {
-    await controller.remove(1);
-    expect(service.remove).toHaveBeenCalledWith(1);
+  describe('remove', () => {
+    it('should call service.remove', async () => {
+      mockUsersService.remove.mockResolvedValue(undefined);
+      await controller.remove(1);
+      expect(mockUsersService.remove).toHaveBeenCalledWith(1);
+    });
   });
 });

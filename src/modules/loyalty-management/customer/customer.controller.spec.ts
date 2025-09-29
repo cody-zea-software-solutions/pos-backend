@@ -36,7 +36,8 @@ describe('CustomerController', () => {
     loyaltyPoints: [],
     customerRewards: [],
     transactions: [],  
-  refunds: [],   
+  refunds: [],  
+  gift_cards: [],  
   };
 
   const mockCustomerService = {

@@ -34,7 +34,7 @@ export class ProductController {
             }),
         }),
     )
-    create(@Body() dto: CreateProductDto, @UploadedFile() file: Express.Multer.File) {
+    create(@Body() dto: CreateProductDto, @UploadedFile() file?: Express.Multer.File) {
         return this.productService.create(dto, file);
     }
 
