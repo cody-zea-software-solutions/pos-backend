@@ -7,7 +7,9 @@ import {
   IsNumber,
   IsDecimal,
   MinLength,
+  IsEnum,
 } from 'class-validator';
+import { UserRole } from '../user-role.enum';
 
 export class CreateUserDto {
   @IsString()
@@ -30,8 +32,8 @@ export class CreateUserDto {
   @IsString()
   phone?: string;
 
-  @IsString()
-  role: string;
+  @IsEnum(UserRole, { message: 'role must be SUPER_ADMIN, SHOP_ADMIN or CASHIER'})
+  role: UserRole;
 
   @IsOptional()
   @IsNumber()

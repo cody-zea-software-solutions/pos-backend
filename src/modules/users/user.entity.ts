@@ -17,6 +17,7 @@ import { Transaction } from '../pos-transactions/transactions/transaction.entity
 import { Refund } from '../refund-process/refund/refund.entity';
 import { RefundApproval } from '../refund-process/refund-approvals/refund-approval.entity';
 import { GiftCard } from '../gift-cards/gift-card.entity';
+import { UserRole } from './user-role.enum';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -40,8 +41,12 @@ export class User {
   @Column({ nullable: true })
   phone: string;
 
-  @Column()
-  role: string;
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.CASHIER,
+  })
+  role: UserRole;
 
   @ManyToOne(() => Shop, (shop) => shop.users, { onDelete: 'SET NULL', nullable: true })
   assigned_shop: Shop;

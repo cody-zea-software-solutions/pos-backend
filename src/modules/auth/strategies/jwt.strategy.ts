@@ -11,12 +11,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       secretOrKey: configService.get<string>('JWT_SECRET'),
     });
-    console.log('JwtStrategy initialized with secret:', process.env.JWT_SECRET || 'supersecret');
+    //console.log('JwtStrategy initialized with secret:', process.env.JWT_SECRET || 'supersecret');
   }
 
   async validate(payload: any) {
     try{
-    console.log('JWT PAYLOAD:', payload);
+    //console.log('JWT PAYLOAD:', payload);
     return { user_id: payload.sub, username: payload.username, role: payload.role };
     } catch (err) {
       console.error('Error in JWT validate:', err);

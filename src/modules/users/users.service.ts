@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ShopService } from '../shop/shop.service';
+import { UserRole } from './user-role.enum';
 
 @Injectable()
 export class UsersService {
@@ -37,6 +38,22 @@ export class UsersService {
         const shop = await this.shopService.findOne(dto.assigned_shop_id as number);
         if (!shop) {
             throw new NotFoundException(`Shop with ID ${dto.assigned_shop_id} not found`);
+        }
+
+        if (dto.role === UserRole.CASHIER) {
+            // PIN must be exactly 6 digits
+            if (!/^\d{6}$/.test(dto.password)) {
+                throw new BadRequestException(
+                    'Cashier password must be a 6-digit numeric PIN',
+                );
+            }
+        } else {
+            // Admin passwords must be at least 6 characters
+            if (!dto.password || dto.password.length < 6) {
+                throw new BadRequestException(
+                    'Admin password must be at least 6 characters long',
+                );
+            }
         }
 
         const hashedPassword = await bcrypt.hash(dto.password, 10);
@@ -73,6 +90,21 @@ export class UsersService {
         }
 
         if (dto.password) {
+            if (dto.role === UserRole.CASHIER || user.role === UserRole.CASHIER) {
+                // PIN must be exactly 6 digits
+                if (!/^\d{6}$/.test(dto.password)) {
+                    throw new BadRequestException(
+                        'Cashier password must be a 6-digit numeric PIN',
+                    );
+                }
+            } else {
+                // Admin passwords must be at least 6 characters
+                if (dto.password.length < 6) {
+                    throw new BadRequestException(
+                        'Admin password must be at least 6 characters long',
+                    );
+                }
+            }
             user.password_hash = await bcrypt.hash(dto.password, 10);
             delete dto.password;
         }
