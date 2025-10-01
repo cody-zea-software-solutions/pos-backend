@@ -33,6 +33,7 @@ import { RefundItemsModule } from './modules/refund-process/refund-items/refund-
 import { RefundApprovalsModule } from './modules/refund-process/refund-approvals/refund-approvals.module';
 import { ServicesModule } from './modules/service-management/services/services.module';
 import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
+import { ProductBundlesModule } from './modules/product-bundle-management/product-bundles/product-bundles.module';
 
 @Module({
   imports: [
@@ -111,6 +112,8 @@ import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
     ServicesModule,
 
     GiftCardsModule,
+
+    ProductBundlesModule,
 
   ],
 

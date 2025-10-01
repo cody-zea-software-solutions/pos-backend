@@ -1,0 +1,24 @@
+export enum BundleType {
+  FIXED = 'FIXED',
+  FLEXIBLE = 'FLEXIBLE',
+  TIERED = 'TIERED',
+}
+
+export enum PricingStrategy {
+  FIXED_PRICE = 'FIXED_PRICE',
+  PERCENTAGE_DISCOUNT = 'PERCENTAGE_DISCOUNT',
+  AMOUNT_DISCOUNT = 'AMOUNT_DISCOUNT',
+}
+
+export enum GstTreatment {
+  TAXABLE = 'TAXABLE',
+  EXEMPT = 'EXEMPT',
+  ZERO_RATED = 'ZERO_RATED',
+}
+
+export enum BundleStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  OUT_OF_STOCK = 'OUT_OF_STOCK',
+  DISCONTINUED = 'DISCONTINUED',
+}
