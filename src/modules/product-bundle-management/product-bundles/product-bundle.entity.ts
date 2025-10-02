@@ -6,8 +6,10 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { BundleStatus, BundleType, GstTreatment, PricingStrategy } from './bundle.enums';
+import { BundleItem } from '../bundle-items/bundle-item.entity';
 
 @Entity('product_bundles')
 export class ProductBundle {
@@ -104,4 +106,7 @@ export class ProductBundle {
 
   @Column({ type: 'enum', enum: BundleStatus, default: BundleStatus.ACTIVE })
   bundle_status: BundleStatus;
+
+  @OneToMany(() => BundleItem, (item) => item.bundle, { cascade: true })
+  items: BundleItem[];
 }
