@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ShopService } from '../shop/shop.service';
 import { UserRole } from './user-role.enum';
+import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service';
 
 @Injectable()
 export class UsersService {
@@ -14,9 +15,14 @@ export class UsersService {
         @InjectRepository(User)
         private userRepo: Repository<User>,
         private shopService: ShopService,
+        private readonly subscriptionPlanService: SubscriptionPlanService,
     ) { }
 
     async create(dto: CreateUserDto): Promise<User> {
+
+        // Validate subscription plan limits
+        await this.subscriptionPlanService.validateLimit('user');
+
         // check if username or email already exists
         const existingUsername = await this.userRepo.findOne({
             where: { username: dto.username },

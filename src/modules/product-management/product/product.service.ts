@@ -9,6 +9,7 @@ import { ProductCategoryService } from '../product-category/product-category.ser
 import { ProductSubcategoryService } from '../product-subcategory/product-subcategory.service';
 import { ProductUnitsService } from '../product-units/product-units.service';
 import { ConsignorService } from '../../inventory/consignor/consignor.service';
+import { SubscriptionPlanService } from 'src/modules/subscription-plan/subscription-plan.service';
 
 @Injectable()
 export class ProductService {
@@ -20,9 +21,14 @@ export class ProductService {
         private readonly subcategoryService: ProductSubcategoryService,
         private readonly unitService: ProductUnitsService,
         private readonly consignorService: ConsignorService,
+        private readonly subscriptionPlanService: SubscriptionPlanService,
     ) { }
 
     async create(dto: CreateProductDto, file?: Express.Multer.File): Promise<Product> {
+
+        // Validate subscription plan limits
+        await this.subscriptionPlanService.validateLimit('product');
+
         const exists = await this.productRepo.findOne({
             where: { product_code: dto.product_code },
         });

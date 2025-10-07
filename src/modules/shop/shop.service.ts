@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Business } from '../business/business.entity';
 import { CreateShopDto } from './dto/create-shop.dto';
 import { UpdateShopDto } from './dto/update-shop.dto';
+import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service';
 
 @Injectable()
 export class ShopService {
@@ -13,9 +14,14 @@ export class ShopService {
         private shopRepo: Repository<Shop>,
         @InjectRepository(Business)
         private businessRepo: Repository<Business>,
+        private readonly subscriptionPlanService: SubscriptionPlanService,
     ) { }
 
     async create(dto: CreateShopDto) {
+
+        // Validate plan limits first
+        await this.subscriptionPlanService.validateLimit('shop');
+
         const business = await this.businessRepo.findOne({
             where: { business_id: dto.business_id },
         });

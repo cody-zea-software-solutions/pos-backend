@@ -35,6 +35,7 @@ import { ServicesModule } from './modules/service-management/services/services.m
 import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
 import { ProductBundlesModule } from './modules/product-bundle-management/product-bundles/product-bundles.module';
 import { BundleItemsModule } from './modules/product-bundle-management/bundle-items/bundle-items.module';
+import { SubscriptionPlanModule } from './modules/subscription-plan/subscription-plan.module';
 
 @Module({
   imports: [
@@ -117,6 +118,8 @@ import { BundleItemsModule } from './modules/product-bundle-management/bundle-it
     ProductBundlesModule,
 
     BundleItemsModule,
+
+    SubscriptionPlanModule,
 
   ],
 

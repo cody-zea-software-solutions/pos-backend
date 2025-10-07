@@ -8,6 +8,7 @@ import { ProductSubcategoryModule } from '../product-subcategory/product-subcate
 import { ProductGroupModule } from '../product-group/product-group.module';
 import { ConsignorModule } from 'src/modules/inventory/consignor/consignor.module';
 import { ProductUnitsModule } from '../product-units/product-units.module';
+import { SubscriptionPlanModule } from 'src/modules/subscription-plan/subscription-plan.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ProductUnitsModule } from '../product-units/product-units.module';
     ProductSubcategoryModule,
     ProductGroupModule,
     ConsignorModule, 
-    ProductUnitsModule,      
+    ProductUnitsModule,  
+    SubscriptionPlanModule,    
 ],
   providers: [ProductService],
   controllers: [ProductController],
