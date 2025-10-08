@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
+import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
 
 @Entity('suppliers')
 export class Supplier {
@@ -49,4 +51,7 @@ export class Supplier {
 
   @Column({ nullable: true })
   gst_registration_type: string;
+
+  @OneToMany(() => PurchaseOrder, (po) => po.shop)
+  purchase_orders: PurchaseOrder[];
 }

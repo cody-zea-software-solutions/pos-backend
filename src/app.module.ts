@@ -36,6 +36,8 @@ import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
 import { ProductBundlesModule } from './modules/product-bundle-management/product-bundles/product-bundles.module';
 import { BundleItemsModule } from './modules/product-bundle-management/bundle-items/bundle-items.module';
 import { SubscriptionPlanModule } from './modules/subscription-plan/subscription-plan.module';
+import { PurchaseOrdersModule } from './modules/inventory/purchase-orders/purchase-orders.module';
+import { PurchaseOrderItemsModule } from './modules/inventory/purchase-order-items/purchase-order-items.module';
 
 @Module({
   imports: [
@@ -120,6 +122,10 @@ import { SubscriptionPlanModule } from './modules/subscription-plan/subscription
     BundleItemsModule,
 
     SubscriptionPlanModule,
+
+    PurchaseOrdersModule,
+
+    PurchaseOrderItemsModule,
 
   ],
 

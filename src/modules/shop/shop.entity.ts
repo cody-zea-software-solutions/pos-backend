@@ -16,6 +16,7 @@ import { CustomerRewards } from '../loyalty-management/customer-rewards/customer
 import { Promotion } from '../promotion/promotion.entity';
 import { Transaction } from '../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../refund-process/refund/refund.entity';
+import { PurchaseOrder } from '../inventory/purchase-orders/purchase-order.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -111,5 +112,8 @@ export class Shop {
 
   @OneToMany(() => Refund, (refund) => refund.shop)
   refunds: Refund[];
+
+  @OneToMany(() => PurchaseOrder, (po) => po.shop)
+  purchase_orders: PurchaseOrder[];
 
 }
