@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   Unique,
   OneToMany,
+  AfterLoad,
 } from 'typeorm';
 import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
+import { GoodsReceivedNote } from '../goods-received-notes/goods-received-note.entity';
+import { SupplierOutstanding } from '../supplier-outstandings/supplier-outstanding.entity';
 
 @Entity('suppliers')
 export class Supplier {
@@ -52,6 +55,35 @@ export class Supplier {
   @Column({ nullable: true })
   gst_registration_type: string;
 
+  @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+  current_outstanding: number;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  credit_utilization_percentage: number;
+
+  @Column({ type: 'datetime', nullable: true })
+  last_payment_date: Date;
+
   @OneToMany(() => PurchaseOrder, (po) => po.shop)
   purchase_orders: PurchaseOrder[];
+
+  // Relationship with GRNs
+  @OneToMany(() => GoodsReceivedNote, (grn) => grn.supplier)
+  goods_received_notes: GoodsReceivedNote[];
+
+  // Relationship with SupplierOutstandings
+  @OneToMany(() => SupplierOutstanding, (out) => out.supplier)
+  supplier_outstandings: SupplierOutstanding[];
+
+  // Auto-calculate credit utilization after loading
+  @AfterLoad()
+  updateCreditUtilization() {
+    if (this.credit_limit && this.credit_limit > 0) {
+      const utilization =
+        (Number(this.current_outstanding) / Number(this.credit_limit)) * 100;
+      this.credit_utilization_percentage = parseFloat(utilization.toFixed(2));
+    } else {
+      this.credit_utilization_percentage = 0;
+    }
+  }
 }

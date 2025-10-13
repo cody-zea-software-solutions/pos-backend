@@ -12,6 +12,7 @@ import {
 import { Supplier } from '../supplier/supplier.entity';
 import { User } from '../../users/user.entity';
 import { PurchaseOrderItem } from '../purchase-order-items/purchase-order-item.entity';
+import { GoodsReceivedNote } from '../goods-received-notes/goods-received-note.entity';
 
 export enum PurchaseOrderStatus {
   DRAFT = 'DRAFT',
@@ -85,6 +86,11 @@ export class PurchaseOrder {
   updated_at: Date;
 
   @OneToMany(() => PurchaseOrderItem, (item) => item.purchase_order, {
-    cascade: true})
+    cascade: true
+  })
   items: PurchaseOrderItem[];
+
+  // Relationship with GRNs
+  @OneToMany(() => GoodsReceivedNote, (grn) => grn.purchase_order)
+  goods_received_notes: GoodsReceivedNote[];
 }

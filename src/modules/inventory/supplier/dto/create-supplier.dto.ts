@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsEmail,
   Min,
+  isNumber,
 } from 'class-validator';
 
 export class CreateSupplierDto {
@@ -55,4 +56,12 @@ export class CreateSupplierDto {
   @IsOptional()
   @IsString()
   gst_registration_type?: string;
+
+  @IsOptional()
+  @IsNumber()
+  current_outstanding?: number;
+
+  @IsOptional()
+  @IsNumber()
+  credit_utilization_percentage?: number;
 }

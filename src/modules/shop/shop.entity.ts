@@ -17,6 +17,8 @@ import { Promotion } from '../promotion/promotion.entity';
 import { Transaction } from '../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../refund-process/refund/refund.entity';
 import { PurchaseOrder } from '../inventory/purchase-orders/purchase-order.entity';
+import { GoodsReceivedNote } from '../inventory/goods-received-notes/goods-received-note.entity';
+import { SupplierOutstanding } from '../inventory/supplier-outstandings/supplier-outstanding.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -115,5 +117,13 @@ export class Shop {
 
   @OneToMany(() => PurchaseOrder, (po) => po.shop)
   purchase_orders: PurchaseOrder[];
+
+  // Relationship with GRNs
+  @OneToMany(() => GoodsReceivedNote, (grn) => grn.shop)
+  goods_received_notes: GoodsReceivedNote[];
+
+  // Relationship with SupplierOutstandings
+  @OneToMany(() => SupplierOutstanding, (out) => out.shop)
+  supplier_outstandings: SupplierOutstanding[];
 
 }
