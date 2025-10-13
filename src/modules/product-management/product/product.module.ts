@@ -6,9 +6,9 @@ import { Product } from './product.entity';
 import { ProductCategoryModule } from '../product-category/product-category.module';
 import { ProductSubcategoryModule } from '../product-subcategory/product-subcategory.module';
 import { ProductGroupModule } from '../product-group/product-group.module';
-import { ConsignorModule } from 'src/modules/inventory/consignor/consignor.module';
+import { ConsignorModule } from '../../inventory/consignor/consignor.module';
 import { ProductUnitsModule } from '../product-units/product-units.module';
-import { SubscriptionPlanModule } from 'src/modules/subscription-plan/subscription-plan.module';
+import { SubscriptionPlanModule } from '../../subscription-plan/subscription-plan.module';
 
 @Module({
   imports: [

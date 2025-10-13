@@ -7,9 +7,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ProductBundle } from '../product-bundles/product-bundle.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
-import { ProductVariation } from 'src/modules/product-management/product-variation/product-variation.entity';
-import { Service } from 'src/modules/service-management/services/service.entity';
+import { Product } from '../../product-management/product/product.entity';
+import { ProductVariation } from '../../product-management/product-variation/product-variation.entity';
+import { Service } from '../../service-management/services/service.entity';
 
 export enum BundleItemType {
   PRODUCT = 'PRODUCT',

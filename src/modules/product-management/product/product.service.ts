@@ -9,7 +9,7 @@ import { ProductCategoryService } from '../product-category/product-category.ser
 import { ProductSubcategoryService } from '../product-subcategory/product-subcategory.service';
 import { ProductUnitsService } from '../product-units/product-units.service';
 import { ConsignorService } from '../../inventory/consignor/consignor.service';
-import { SubscriptionPlanService } from 'src/modules/subscription-plan/subscription-plan.service';
+import { SubscriptionPlanService } from '../../subscription-plan/subscription-plan.service';
 
 @Injectable()
 export class ProductService {

@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PurchaseOrderItem } from './purchase-order-item.entity';
 import { Repository } from 'typeorm';
 import { PurchaseOrdersService } from '../purchase-orders/purchase-orders.service';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
 import { CreatePurchaseOrderItemDto } from './dto/create-purchase-order-item.dto';
 import { UpdatePurchaseOrderItemDto } from './dto/update-purchase-order-item.dto';
 

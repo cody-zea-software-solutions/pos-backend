@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BundleItem } from './bundle-item.entity';
 import { Repository } from 'typeorm';
 import { ProductBundlesService } from '../product-bundles/product-bundles.service';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
-import { ServicesService } from 'src/modules/service-management/services/services.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
+import { ServicesService } from '../../service-management/services/services.service';
 import { CreateBundleItemDto } from './dto/create-bundle-item.dto';
 import { UpdateBundleItemDto } from './dto/update-bundle-item.dto';
 

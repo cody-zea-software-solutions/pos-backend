@@ -1,4 +1,4 @@
-import { Shop } from 'src/modules/shop/shop.entity';
+import { Shop } from '../../shop/shop.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Supplier } from '../supplier/supplier.entity';
-import { User } from 'src/modules/users/user.entity';
+import { User } from '../../users/user.entity';
 import { PurchaseOrderItem } from '../purchase-order-items/purchase-order-item.entity';
 
 export enum PurchaseOrderStatus {

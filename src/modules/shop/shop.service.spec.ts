@@ -5,7 +5,9 @@ import { Business } from '../business/business.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, ObjectLiteral } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service'; // 👈 added import
 
+// ---------- MOCK REPOSITORY FACTORY ----------
 type MockRepo<T extends ObjectLiteral = any> = {
   [P in keyof Repository<T>]?: jest.Mock;
 };
@@ -22,13 +24,19 @@ describe('ShopService', () => {
   let service: ShopService;
   let shopRepo: MockRepo<Shop>;
   let businessRepo: MockRepo<Business>;
+  let subscriptionPlanService: any; // 👈 using "any" to avoid TS strict typing issue
 
   beforeEach(async () => {
+    subscriptionPlanService = {
+      getDefaultPlan: jest.fn().mockResolvedValue({ plan_id: 1, name: 'Basic Plan' }),
+    } as any;
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ShopService,
         { provide: getRepositoryToken(Shop), useValue: createMockRepo<Shop>() },
         { provide: getRepositoryToken(Business), useValue: createMockRepo<Business>() },
+        { provide: SubscriptionPlanService, useValue: subscriptionPlanService }, // 👈 added mock
       ],
     }).compile();
 
@@ -37,6 +45,7 @@ describe('ShopService', () => {
     businessRepo = module.get(getRepositoryToken(Business));
   });
 
+  // ---------- CREATE ----------
   describe('create', () => {
     it('should create and return a shop', async () => {
       const dto = { business_id: 1, shop_name: 'Test Shop', shop_code: 'S1' };
@@ -46,7 +55,7 @@ describe('ShopService', () => {
         shop_name: dto.shop_name,
         shop_code: dto.shop_code,
         business,
-      } as unknown as Shop; // 👈 force cast to avoid missing fields error
+      } as unknown as Shop;
 
       businessRepo.findOne!.mockResolvedValue(business);
       shopRepo.create!.mockReturnValue(createdShop);
@@ -69,6 +78,7 @@ describe('ShopService', () => {
     });
   });
 
+  // ---------- FIND ALL ----------
   describe('findAll', () => {
     it('should return an array of shops', async () => {
       const shops = [{ shop_id: 1 } as Shop];
@@ -81,6 +91,7 @@ describe('ShopService', () => {
     });
   });
 
+  // ---------- FIND ONE ----------
   describe('findOne', () => {
     it('should return a shop by id', async () => {
       const shop = { shop_id: 1 } as Shop;
@@ -101,6 +112,7 @@ describe('ShopService', () => {
     });
   });
 
+  // ---------- UPDATE ----------
   describe('update', () => {
     it('should update and return the shop', async () => {
       const existingShop = { shop_id: 1, shop_name: 'Old Shop' } as Shop;
@@ -125,6 +137,7 @@ describe('ShopService', () => {
     });
   });
 
+  // ---------- REMOVE ----------
   describe('remove', () => {
     it('should remove the shop', async () => {
       const shop = { shop_id: 1 } as Shop;

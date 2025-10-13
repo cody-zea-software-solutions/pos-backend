@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
-import { ProductVariation } from 'src/modules/product-management/product-variation/product-variation.entity';
+import { Product } from '../../product-management/product/product.entity';
+import { ProductVariation } from '../../product-management/product-variation/product-variation.entity';
 
 @Entity('purchase_order_items')
 export class PurchaseOrderItem {

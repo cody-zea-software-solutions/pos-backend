@@ -4,7 +4,7 @@ import { PaymentsController } from './payments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Payment } from './payment.entity';
 import { TransactionsModule } from '../transactions/transactions.module';
-import { UsersModule } from 'src/modules/users/users.module';
+import { UsersModule } from '../../users/users.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Payment]), TransactionsModule, UsersModule],

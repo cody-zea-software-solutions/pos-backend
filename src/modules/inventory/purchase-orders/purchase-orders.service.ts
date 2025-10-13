@@ -2,9 +2,9 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { PurchaseOrder, PurchaseOrderStatus } from './purchase-order.entity';
 import { Repository } from 'typeorm';
-import { ShopService } from 'src/modules/shop/shop.service';
+import { ShopService } from '../../shop/shop.service';
 import { SupplierService } from '../supplier/supplier.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { CreatePurchaseOrderDto } from './dto/create-purchase-order.dto';
 import { UpdatePurchaseOrderDto } from './dto/update-purchase-order.dto';
 
