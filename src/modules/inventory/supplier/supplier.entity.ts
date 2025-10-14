@@ -6,6 +6,8 @@ import {
   Unique,
   OneToMany,
   AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
 import { GoodsReceivedNote } from '../goods-received-notes/goods-received-note.entity';
@@ -78,6 +80,19 @@ export class Supplier {
   // Auto-calculate credit utilization after loading
   @AfterLoad()
   updateCreditUtilization() {
+    if (this.credit_limit && this.credit_limit > 0) {
+      const utilization =
+        (Number(this.current_outstanding) / Number(this.credit_limit)) * 100;
+      this.credit_utilization_percentage = parseFloat(utilization.toFixed(2));
+    } else {
+      this.credit_utilization_percentage = 0;
+    }
+  }
+
+  // Auto-calculate credit utilization before insert or update
+  @BeforeInsert()
+  @BeforeUpdate()
+  updateCreditUtilizationBeforeSave() {
     if (this.credit_limit && this.credit_limit > 0) {
       const utilization =
         (Number(this.current_outstanding) / Number(this.credit_limit)) * 100;

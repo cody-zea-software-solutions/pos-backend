@@ -1,4 +1,4 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Supplier } from './supplier.entity';
 import { Repository } from 'typeorm';
@@ -68,20 +68,37 @@ export class SupplierService {
         await this.supplierRepo.remove(supplier);
     }
 
-    // async recalculateOutstandingAndUtilization(supplierId: number): Promise<void> {
-    //     // fetch all outstanding rows (using supplierOutstandingsService)
-    //     const items = await this.supplierOutstandingsService.findBySupplier(supplierId);
+    // Update outstanding after GRN creation
+    async updateOutstandingAfterGrn(
+        supplierId: number,
+        additionalOutstanding: number,
+    ): Promise<{ warning?: string }> {
+        const supplier = await this.findOne(supplierId);
+        if (!supplier) {
+            throw new NotFoundException(`Supplier ${supplierId} not found`);
+        }
 
-    //     const currentOutstanding = items.reduce((sum, r) => sum + Number(r.balance_amount ?? 0), 0);
-    //     const supplier = await this.findOne(supplierId);
+        const currentOutstanding = Number(supplier.current_outstanding ?? 0);
+        const newOutstanding = currentOutstanding + Number(additionalOutstanding ?? 0);
+        const creditLimit = Number(supplier.credit_limit ?? 0);
 
-    //     const creditLimit = Number(supplier.credit_limit ?? 0);
-    //     const creditUtilization = creditLimit > 0 ? Number(((currentOutstanding / creditLimit) * 100).toFixed(2)) : 0;
+        let warningMessage: string | undefined;
 
-    //     await this.update(supplierId, {
-    //         current_outstanding: currentOutstanding,
-    //         credit_utilization_percentage: creditUtilization,
-    //     });
-    // }
+        // Check for credit overflow
+        if (creditLimit > 0 && newOutstanding > creditLimit) {
+            const overflow = newOutstanding - creditLimit;
+            warningMessage = `⚠️ Supplier credit limit exceeded by ${overflow.toFixed(
+                2,
+            )}. Limit: ${creditLimit.toFixed(2)}, Current: ${newOutstanding.toFixed(2)}.`;
+        }
+
+        // Update
+        await this.update(supplierId, {
+            current_outstanding: newOutstanding,
+        });
+
+        //  log warning 
+        return warningMessage ? { warning: warningMessage } : {};
+    }
 
 }

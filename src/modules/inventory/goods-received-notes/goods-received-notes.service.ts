@@ -67,8 +67,16 @@ export class GoodsReceivedNotesService {
         grn.supplier = supplier;
         if (purchaseOrder) grn.purchase_order = purchaseOrder;
         if (receivedByUser) grn.received_by_user = receivedByUser;
-        if (verifiedByUser) grn.verified_by_user = verifiedByUser;
-        if (postedByUser) grn.posted_by_user = postedByUser;
+        if (verifiedByUser) {
+            grn.verified_by_user = verifiedByUser;
+            grn.status = GrnStatus.VERIFIED;
+            grn.verified_at = new Date();
+        };
+        if (postedByUser) {
+            grn.posted_by_user = postedByUser;
+            grn.status = GrnStatus.POSTED;
+            grn.posted_at = new Date();
+        };
         grn.status = GrnStatus.RECEIVED;
 
         // Save GRN
@@ -89,8 +97,11 @@ export class GoodsReceivedNotesService {
         savedGrn.total_outstanding_amount = outstanding.balance_amount;
         await this.grnRepo.save(savedGrn);
 
-        // ask supplier service to recalculate aggregates
-        // await this.supplierService.recalculateOutstandingAndUtilization(supplier.supplier_id);
+        // Update Supplier credit stats and validate credit limit
+        await this.supplierService.updateOutstandingAfterGrn(
+            supplier.supplier_id,
+            outstanding.balance_amount,
+        );
 
         return savedGrn;
     }
@@ -150,14 +161,24 @@ export class GoodsReceivedNotesService {
             grn.purchase_order = await this.poService.findOne(dto.purchase_order_id);
         }
 
-        if (dto.received_by_user)
+        if (dto.received_by_user){
             grn.received_by_user = await this.userService.findOne(dto.received_by_user);
+            if (grn.status === GrnStatus.DRAFT) {
+                grn.status = GrnStatus.RECEIVED;
+            }
+        }
 
-        if (dto.verified_by_user)
+        if (dto.verified_by_user){
             grn.verified_by_user = await this.userService.findOne(dto.verified_by_user);
+            grn.status = GrnStatus.VERIFIED;
+            grn.verified_at = new Date();
+        }
 
-        if (dto.posted_by_user)
+        if (dto.posted_by_user){
             grn.posted_by_user = await this.userService.findOne(dto.posted_by_user);
+            grn.status = GrnStatus.POSTED;
+            grn.posted_at = new Date();
+        }
 
         Object.assign(grn, dto);
         return this.grnRepo.save(grn);
