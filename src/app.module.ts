@@ -40,6 +40,7 @@ import { PurchaseOrdersModule } from './modules/inventory/purchase-orders/purcha
 import { PurchaseOrderItemsModule } from './modules/inventory/purchase-order-items/purchase-order-items.module';
 import { SupplierOutstandingsModule } from './modules/inventory/supplier-outstandings/supplier-outstandings.module';
 import { GoodsReceivedNotesModule } from './modules/inventory/goods-received-notes/goods-received-notes.module';
+import { SupplierPaymentsModule } from './modules/inventory/supplier-payments/supplier-payments.module';
 
 @Module({
   imports: [
@@ -132,6 +133,8 @@ import { GoodsReceivedNotesModule } from './modules/inventory/goods-received-not
     SupplierOutstandingsModule,
 
     GoodsReceivedNotesModule,
+
+    SupplierPaymentsModule,
 
   ],
 

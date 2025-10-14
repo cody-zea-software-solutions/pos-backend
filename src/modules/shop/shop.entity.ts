@@ -19,6 +19,7 @@ import { Refund } from '../refund-process/refund/refund.entity';
 import { PurchaseOrder } from '../inventory/purchase-orders/purchase-order.entity';
 import { GoodsReceivedNote } from '../inventory/goods-received-notes/goods-received-note.entity';
 import { SupplierOutstanding } from '../inventory/supplier-outstandings/supplier-outstanding.entity';
+import { SupplierPayment } from '../inventory/supplier-payments/supplier-payment.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -125,5 +126,9 @@ export class Shop {
   // Relationship with SupplierOutstandings
   @OneToMany(() => SupplierOutstanding, (out) => out.shop)
   supplier_outstandings: SupplierOutstanding[];
+
+  // Relationship with SupplierPayments
+  @OneToMany(() => SupplierPayment, (pay) => pay.shop)
+  supplier_payments: SupplierPayment[];
 
 }

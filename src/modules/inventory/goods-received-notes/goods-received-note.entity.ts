@@ -13,6 +13,7 @@ import { Supplier } from '../supplier/supplier.entity';
 import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
 import { User } from '../../users/user.entity';
 import { SupplierOutstanding } from '../supplier-outstandings/supplier-outstanding.entity';
+import { SupplierPayment } from '../supplier-payments/supplier-payment.entity';
 
 // -----------------------------
 // ENUMS
@@ -141,4 +142,8 @@ export class GoodsReceivedNote {
   // -----------------------------
   @OneToMany(() => SupplierOutstanding, (out) => out.grn)
   supplier_outstandings: SupplierOutstanding[];
+
+  @OneToMany(() => SupplierPayment, (payment) => payment.grn)
+  supplierPayments: SupplierPayment[];
+
 }

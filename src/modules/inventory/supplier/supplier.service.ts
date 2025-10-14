@@ -4,7 +4,6 @@ import { Supplier } from './supplier.entity';
 import { Repository } from 'typeorm';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
-import { SupplierOutstandingsService } from '../supplier-outstandings/supplier-outstandings.service';
 
 @Injectable()
 export class SupplierService {
@@ -99,6 +98,10 @@ export class SupplierService {
 
         //  log warning 
         return warningMessage ? { warning: warningMessage } : {};
+    }
+
+    async saveSupplier(supplier: Supplier): Promise<Supplier> {
+        return this.supplierRepo.save(supplier);
     }
 
 }
