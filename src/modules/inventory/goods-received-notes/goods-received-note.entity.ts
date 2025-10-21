@@ -14,6 +14,7 @@ import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
 import { User } from '../../users/user.entity';
 import { SupplierOutstanding } from '../supplier-outstandings/supplier-outstanding.entity';
 import { SupplierPayment } from '../supplier-payments/supplier-payment.entity';
+import { GRNItem } from '../grn-items/grn-item.entity';
 
 // -----------------------------
 // ENUMS
@@ -145,5 +146,8 @@ export class GoodsReceivedNote {
 
   @OneToMany(() => SupplierPayment, (payment) => payment.grn)
   supplierPayments: SupplierPayment[];
+
+  @OneToMany(() => GRNItem, (item) => item.grn, { cascade: true, eager: true })
+  items: GRNItem[];
 
 }

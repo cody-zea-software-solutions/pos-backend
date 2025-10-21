@@ -41,6 +41,7 @@ import { PurchaseOrderItemsModule } from './modules/inventory/purchase-order-ite
 import { SupplierOutstandingsModule } from './modules/inventory/supplier-outstandings/supplier-outstandings.module';
 import { GoodsReceivedNotesModule } from './modules/inventory/goods-received-notes/goods-received-notes.module';
 import { SupplierPaymentsModule } from './modules/inventory/supplier-payments/supplier-payments.module';
+import { GrnItemsModule } from './modules/inventory/grn-items/grn-items.module';
 
 @Module({
   imports: [
@@ -135,6 +136,8 @@ import { SupplierPaymentsModule } from './modules/inventory/supplier-payments/su
     GoodsReceivedNotesModule,
 
     SupplierPaymentsModule,
+
+    GrnItemsModule,
 
   ],
 

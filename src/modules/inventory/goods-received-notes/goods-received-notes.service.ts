@@ -1,4 +1,4 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GoodsReceivedNote, GrnStatus } from './goods-received-note.entity';
 import { Repository } from 'typeorm';
@@ -161,20 +161,20 @@ export class GoodsReceivedNotesService {
             grn.purchase_order = await this.poService.findOne(dto.purchase_order_id);
         }
 
-        if (dto.received_by_user){
+        if (dto.received_by_user) {
             grn.received_by_user = await this.userService.findOne(dto.received_by_user);
             if (grn.status === GrnStatus.DRAFT) {
                 grn.status = GrnStatus.RECEIVED;
             }
         }
 
-        if (dto.verified_by_user){
+        if (dto.verified_by_user) {
             grn.verified_by_user = await this.userService.findOne(dto.verified_by_user);
             grn.status = GrnStatus.VERIFIED;
             grn.verified_at = new Date();
         }
 
-        if (dto.posted_by_user){
+        if (dto.posted_by_user) {
             grn.posted_by_user = await this.userService.findOne(dto.posted_by_user);
             grn.status = GrnStatus.POSTED;
             grn.posted_at = new Date();
