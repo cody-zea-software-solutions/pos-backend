@@ -20,6 +20,8 @@ import { PurchaseOrder } from '../inventory/purchase-orders/purchase-order.entit
 import { GoodsReceivedNote } from '../inventory/goods-received-notes/goods-received-note.entity';
 import { SupplierOutstanding } from '../inventory/supplier-outstandings/supplier-outstanding.entity';
 import { SupplierPayment } from '../inventory/supplier-payments/supplier-payment.entity';
+import { ShopInventory } from '../inventory/shop-inventory/shop-inventory.entity';
+import { BatchMovement } from '../inventory/batch-movements/batch-movement.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -130,5 +132,15 @@ export class Shop {
   // Relationship with SupplierPayments
   @OneToMany(() => SupplierPayment, (pay) => pay.shop)
   supplier_payments: SupplierPayment[];
+
+  // Relationship with ShopInventory
+  @OneToMany(() => ShopInventory, (shopInventory) => shopInventory.shop)
+  inventory: ShopInventory[];
+
+  // Relationships with BatchMovements
+  @OneToMany(() => BatchMovement, (batchMovement) => batchMovement.from_shop)
+  batch_movements_from: BatchMovement[];
+  @OneToMany(() => BatchMovement, (batchMovement) => batchMovement.to_shop)
+  batch_movements_to: BatchMovement[];
 
 }

@@ -68,7 +68,7 @@ export class Supplier {
   @Column({ type: 'datetime', nullable: true })
   last_payment_date: Date;
 
-  @OneToMany(() => PurchaseOrder, (po) => po.shop)
+  @OneToMany(() => PurchaseOrder, (po) => po.supplier)
   purchase_orders: PurchaseOrder[];
 
   // Relationship with GRNs
@@ -80,11 +80,11 @@ export class Supplier {
   supplier_outstandings: SupplierOutstanding[];
 
   // Relationship with SupplierPayments
-  @OneToMany(() => SupplierPayment, (pay) => pay.shop)
+  @OneToMany(() => SupplierPayment, (pay) => pay.supplier)
   supplier_payments: SupplierPayment[];
 
   // Relationship with Batches
-  @OneToMany(() => Batch, (batch) => batch.product)
+  @OneToMany(() => Batch, (batch) => batch.supplier)
   batches: Batch[];
 
   // Auto-calculate credit utilization after loading

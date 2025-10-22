@@ -7,10 +7,12 @@ import {
     ManyToOne,
     JoinColumn,
     CreateDateColumn,
+    OneToMany,
 } from 'typeorm';
 import { Supplier } from '../supplier/supplier.entity';
 import { User } from '../../users/user.entity';
 import { Consignor } from '../consignor/consignor.entity';
+import { ShopInventory } from '../shop-inventory/shop-inventory.entity';
 
 @Entity('batches')
 export class Batch {
@@ -75,4 +77,7 @@ export class Batch {
     @ManyToOne(() => User, { eager: true })
     @JoinColumn({ name: 'created_by_user' })
     created_by_user: User;
+
+    @OneToMany(() => ShopInventory, (shopInventory) => shopInventory.batch)
+    shop_inventory: ShopInventory[];
 }

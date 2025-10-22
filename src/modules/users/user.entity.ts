@@ -105,7 +105,7 @@ export class User {
   @OneToMany(() => Promotion, (promotion) => promotion.created_by)
   promotions: Promotion[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.shop)
+  @OneToMany(() => Transaction, (transaction) => transaction.processed_by)
   transactions: Transaction[];
 
   @OneToMany(() => Refund, (refund) => refund.processed_by)
