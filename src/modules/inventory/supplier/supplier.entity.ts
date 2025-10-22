@@ -13,6 +13,7 @@ import { PurchaseOrder } from '../purchase-orders/purchase-order.entity';
 import { GoodsReceivedNote } from '../goods-received-notes/goods-received-note.entity';
 import { SupplierOutstanding } from '../supplier-outstandings/supplier-outstanding.entity';
 import { SupplierPayment } from '../supplier-payments/supplier-payment.entity';
+import { Batch } from '../batches/batches.entity';
 
 @Entity('suppliers')
 export class Supplier {
@@ -81,6 +82,10 @@ export class Supplier {
   // Relationship with SupplierPayments
   @OneToMany(() => SupplierPayment, (pay) => pay.shop)
   supplier_payments: SupplierPayment[];
+
+  // Relationship with Batches
+  @OneToMany(() => Batch, (batch) => batch.product)
+  batches: Batch[];
 
   // Auto-calculate credit utilization after loading
   @AfterLoad()

@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Batch } from '../batches/batches.entity';
 
 @Entity('consignors')
 export class Consignor {
@@ -61,5 +62,8 @@ export class Consignor {
 
   @OneToMany(() => RefundItem, (item) => item.consignor)
   refund_items: RefundItem[];
+
+  @OneToMany(() => Batch, (batch) => batch.consignor)
+  batches: Batch[];
 
 }

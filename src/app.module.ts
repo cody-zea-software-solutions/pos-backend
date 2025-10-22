@@ -42,6 +42,7 @@ import { SupplierOutstandingsModule } from './modules/inventory/supplier-outstan
 import { GoodsReceivedNotesModule } from './modules/inventory/goods-received-notes/goods-received-notes.module';
 import { SupplierPaymentsModule } from './modules/inventory/supplier-payments/supplier-payments.module';
 import { GrnItemsModule } from './modules/inventory/grn-items/grn-items.module';
+import { BatchesModule } from './modules/inventory/batches/batches.module';
 
 @Module({
   imports: [
@@ -138,6 +139,8 @@ import { GrnItemsModule } from './modules/inventory/grn-items/grn-items.module';
     SupplierPaymentsModule,
 
     GrnItemsModule,
+
+    BatchesModule,
 
   ],
 

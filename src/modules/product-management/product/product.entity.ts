@@ -16,6 +16,7 @@ import { Consignor } from '../../inventory/consignor/consignor.entity';
 import { ProductVariation } from '../product-variation/product-variation.entity';
 import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
 import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
+import { Batch } from 'src/modules/inventory/batches/batches.entity';
 
 @Entity('products')
 export class Product {
@@ -136,6 +137,9 @@ export class Product {
 
   @OneToMany(() => RefundItem, (item) => item.product)
   refund_items: RefundItem[];
+
+  @OneToMany(() => Batch, (batch) => batch.product)
+  batches: Batch[];
 
   // Default pricing group relation → will implement later
   @Column({ nullable: true })
