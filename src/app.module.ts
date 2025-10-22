@@ -43,6 +43,8 @@ import { GoodsReceivedNotesModule } from './modules/inventory/goods-received-not
 import { SupplierPaymentsModule } from './modules/inventory/supplier-payments/supplier-payments.module';
 import { GrnItemsModule } from './modules/inventory/grn-items/grn-items.module';
 import { BatchesModule } from './modules/inventory/batches/batches.module';
+import { ShopInventoryModule } from './modules/inventory/shop-inventory/shop-inventory.module';
+import { BatchMovementsModule } from './modules/inventory/batch-movements/batch-movements.module';
 
 @Module({
   imports: [
@@ -141,6 +143,10 @@ import { BatchesModule } from './modules/inventory/batches/batches.module';
     GrnItemsModule,
 
     BatchesModule,
+
+    ShopInventoryModule,
+
+    BatchMovementsModule,
 
   ],
 
