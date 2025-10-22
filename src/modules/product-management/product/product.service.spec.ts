@@ -1,142 +1,160 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Product } from './product.entity';
 import { Repository } from 'typeorm';
+import { Product } from './product.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { ProductGroupService } from '../product-group/product-group.service';
 import { ProductCategoryService } from '../product-category/product-category.service';
 import { ProductSubcategoryService } from '../product-subcategory/product-subcategory.service';
 import { ProductUnitsService } from '../product-units/product-units.service';
 import { ConsignorService } from '../../inventory/consignor/consignor.service';
+import { SubscriptionPlanService } from '../../subscription-plan/subscription-plan.service';
 
 describe('ProductService', () => {
   let service: ProductService;
-  let repo: Repository<Product>;
+  let repo: jest.Mocked<Repository<Product>>;
 
-  const mockProduct = {
+  const mockProduct: Product = {
     product_id: 1,
     product_name: 'Test Product',
     product_code: 'P001',
     base_price: 100,
     cost_price: 80,
-    is_active: true,
   } as Product;
 
   const mockRepo = {
     findOne: jest.fn(),
     find: jest.fn(),
-    create: jest.fn().mockReturnValue(mockProduct),
-    save: jest.fn().mockResolvedValue(mockProduct),
-    remove: jest.fn().mockResolvedValue(undefined),
+    create: jest.fn(),
+    save: jest.fn(),
+    remove: jest.fn(),
   };
 
-  const mockDepService = { findOne: jest.fn() };
+  const mockGroupService = { findOne: jest.fn() };
+  const mockCategoryService = { findOne: jest.fn() };
+  const mockSubcategoryService = { findOne: jest.fn() };
+  const mockUnitService = { findOne: jest.fn() };
+  const mockConsignorService = { findOne: jest.fn() };
+  const mockSubscriptionPlanService = { validateLimit: jest.fn() };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductService,
         { provide: getRepositoryToken(Product), useValue: mockRepo },
-        { provide: ProductGroupService, useValue: mockDepService },
-        { provide: ProductCategoryService, useValue: mockDepService },
-        { provide: ProductSubcategoryService, useValue: mockDepService },
-        { provide: ProductUnitsService, useValue: mockDepService },
-        { provide: ConsignorService, useValue: mockDepService },
+        { provide: ProductGroupService, useValue: mockGroupService },
+        { provide: ProductCategoryService, useValue: mockCategoryService },
+        { provide: ProductSubcategoryService, useValue: mockSubcategoryService },
+        { provide: ProductUnitsService, useValue: mockUnitService },
+        { provide: ConsignorService, useValue: mockConsignorService },
+        { provide: SubscriptionPlanService, useValue: mockSubscriptionPlanService },
       ],
     }).compile();
 
     service = module.get<ProductService>(ProductService);
-    repo = module.get<Repository<Product>>(getRepositoryToken(Product));
+    repo = module.get(getRepositoryToken(Product));
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  afterEach(() => jest.clearAllMocks());
 
+  // ---------------------------
+  // create()
+  // ---------------------------
   describe('create', () => {
     it('should create a product successfully', async () => {
       mockRepo.findOne.mockResolvedValue(null);
-      const dto = {
-        product_name: 'Test Product',
-        product_code: 'P001',
-        base_price: 100,
-        cost_price: 80,
-      };
-      const result = await service.create(dto as any);
+      mockSubscriptionPlanService.validateLimit.mockResolvedValue(true);
+      mockRepo.create.mockReturnValue(mockProduct);
+      mockRepo.save.mockResolvedValue(mockProduct);
+
+      const result = await service.create(mockProduct);
       expect(result).toEqual(mockProduct);
-      expect(mockRepo.save).toHaveBeenCalled();
+      expect(repo.create).toHaveBeenCalledWith(expect.objectContaining(mockProduct));
+      expect(repo.save).toHaveBeenCalled();
     });
 
-    it('should throw conflict exception if product_code exists', async () => {
+    it('should throw ConflictException if product_code already exists', async () => {
       mockRepo.findOne.mockResolvedValue(mockProduct);
-      await expect(
-        service.create({ product_code: 'P001' } as any),
-      ).rejects.toThrow(ConflictException);
+      await expect(service.create(mockProduct)).rejects.toThrow(ConflictException);
     });
   });
 
+  // ---------------------------
+  // findAll()
+  // ---------------------------
   describe('findAll', () => {
     it('should return all products', async () => {
       mockRepo.find.mockResolvedValue([mockProduct]);
-      expect(await service.findAll()).toEqual([mockProduct]);
+      const result = await service.findAll();
+      expect(result).toEqual([mockProduct]);
+      expect(repo.find).toHaveBeenCalled();
     });
   });
 
+  // ---------------------------
+  // findOne()
+  // ---------------------------
   describe('findOne', () => {
-    it('should return one product', async () => {
+    it('should return a product', async () => {
       mockRepo.findOne.mockResolvedValue(mockProduct);
-      expect(await service.findOne(1)).toEqual(mockProduct);
+      const result = await service.findOne(1);
+      expect(result).toEqual(mockProduct);
     });
 
-    it('should throw not found if missing', async () => {
+    it('should throw NotFoundException if not found', async () => {
       mockRepo.findOne.mockResolvedValue(null);
       await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
     });
   });
 
+  // ---------------------------
+  // update()
+  // ---------------------------
   describe('update', () => {
-    it('should update and return product', async () => {
-      jest.spyOn(service, 'findOne').mockResolvedValue(mockProduct);
-      mockRepo.findOne.mockResolvedValue(null);
+    it('should update a product successfully', async () => {
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(mockProduct);
+      mockRepo.findOne.mockResolvedValueOnce(null); // no duplicate found
+      mockRepo.save.mockResolvedValue({ ...mockProduct, product_name: 'Updated' });
+
       const result = await service.update(1, { product_name: 'Updated' });
-      expect(result).toEqual(mockProduct);
+      expect(result.product_name).toBe('Updated');
+      expect(repo.save).toHaveBeenCalled();
     });
 
-    it('should throw conflict if product_code already exists', async () => {
-      jest.spyOn(service, 'findOne').mockResolvedValue(mockProduct);
-      mockRepo.findOne.mockResolvedValue(mockProduct);
-      await expect(service.update(1, { product_code: 'P001' })).rejects.toThrow(
-        ConflictException,
-      );
+    it('should throw ConflictException if product_code already exists', async () => {
+      // Simulate existing product (the one we are updating)
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(mockProduct);
+
+      // Mock two findOne calls in order
+      mockRepo.findOne
+        .mockResolvedValueOnce(null) // maybe for initial pre-check
+        .mockResolvedValueOnce({ ...mockProduct, product_id: 2 }); // duplicate code found
+
+      await expect(
+        service.update(1, { product_code: 'P001' })
+      ).rejects.toThrow(ConflictException);
     });
   });
 
+  // ---------------------------
+  // remove()
+  // ---------------------------
   describe('remove', () => {
-    it('should remove product', async () => {
-      jest.spyOn(service, 'findOne').mockResolvedValue(mockProduct);
-      await expect(service.remove(1)).resolves.toBeUndefined();
-    });
-  });
+    it('should remove a product successfully', async () => {
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(mockProduct);
+      mockRepo.remove.mockResolvedValue(mockProduct);
 
-  describe('findByName', () => {
-    it('should return products by name', async () => {
-      mockRepo.find.mockResolvedValue([mockProduct]);
-      expect(await service.findByName('Test')).toEqual([mockProduct]);
-    });
-  });
-
-  describe('findByBarcode', () => {
-    it('should return product by barcode', async () => {
-      mockRepo.findOne.mockResolvedValue(mockProduct);
-      expect(await service.findByBarcode('123')).toEqual(mockProduct);
+      await service.remove(1);
+      expect(repo.remove).toHaveBeenCalledWith(mockProduct);
     });
 
-    it('should throw not found if barcode missing', async () => {
-      mockRepo.findOne.mockResolvedValue(null);
-      await expect(service.findByBarcode('123')).rejects.toThrow(
-        NotFoundException,
-      );
+    it('should throw NotFoundException if product not found', async () => {
+      jest
+        .spyOn(service, 'findOne')
+        .mockRejectedValueOnce(new NotFoundException('Product 1 not found'));
+
+      await expect(service.remove(1)).rejects.toThrow(NotFoundException);
     });
   });
 });

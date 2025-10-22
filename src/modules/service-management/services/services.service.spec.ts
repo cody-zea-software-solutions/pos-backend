@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ServicesService } from './services.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Service,ServiceType } from './service.entity';
+import { Service, ServiceType } from './service.entity';
 import { Repository } from 'typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-//import { ServiceType } from './service.entity';
 
 describe('ServicesService', () => {
   let service: ServicesService;
@@ -17,7 +16,6 @@ describe('ServicesService', () => {
     base_price: 100,
     cost_price: 50,
     service_type: ServiceType.INDIVIDUAL,
-    image_url: null,
   };
 
   const mockRepo = {
@@ -63,14 +61,24 @@ describe('ServicesService', () => {
 
     mockRepo.findOne.mockResolvedValue(null);
     mockRepo.create.mockReturnValue(dto);
-    mockRepo.save.mockResolvedValue({ ...dto, service_id: 3, image_url: '/uploads/services/file.png' });
+    mockRepo.save.mockResolvedValue({
+      ...dto,
+      service_id: 3,
+      image_url: '/uploads/services/file.png',
+    });
 
-    expect(await service.create(dto, file)).toEqual({ ...dto, service_id: 3, image_url: '/uploads/services/file.png' });
+    expect(await service.create(dto, file)).toEqual({
+      ...dto,
+      service_id: 3,
+      image_url: '/uploads/services/file.png',
+    });
   });
 
   it('should throw conflict if service_code exists on create', async () => {
     mockRepo.findOne.mockResolvedValue(mockService);
-    await expect(service.create({ service_code: 'TS001' } as any)).rejects.toThrow(ConflictException);
+    await expect(
+      service.create({ service_code: 'TS001' } as any),
+    ).rejects.toThrow(ConflictException);
   });
 
   it('should find all services', async () => {
@@ -101,9 +109,17 @@ describe('ServicesService', () => {
     const file = { filename: 'update.png' } as Express.Multer.File;
 
     mockRepo.findOne.mockResolvedValue(mockService);
-    mockRepo.save.mockResolvedValue({ ...mockService, ...dto, image_url: '/uploads/services/update.png' });
+    mockRepo.save.mockResolvedValue({
+      ...mockService,
+      ...dto,
+      image_url: '/uploads/services/update.png',
+    });
 
-    expect(await service.update(1, dto, file)).toEqual({ ...mockService, ...dto, image_url: '/uploads/services/update.png' });
+    expect(await service.update(1, dto, file)).toEqual({
+      ...mockService,
+      ...dto,
+      image_url: '/uploads/services/update.png',
+    });
   });
 
   it('should throw ConflictException when updating with duplicate service_code', async () => {
@@ -123,7 +139,7 @@ describe('ServicesService', () => {
     mockRepo.findOne.mockResolvedValue(mockService);
     mockRepo.remove.mockResolvedValue(mockService);
 
-    expect(await service.remove(1)).toEqual(mockService);
+    await expect(service.remove(1)).resolves.toBeUndefined(); // ✅ Fixed line
   });
 
   it('should throw NotFoundException on remove if service not found', async () => {

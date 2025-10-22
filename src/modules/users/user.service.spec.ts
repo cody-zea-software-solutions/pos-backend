@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { ShopService } from '../shop/shop.service';
+import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service';
 import { UserRole } from './user-role.enum';
 import * as bcrypt from 'bcrypt';
 import { ConflictException, NotFoundException } from '@nestjs/common';
@@ -12,6 +13,7 @@ describe('UsersService', () => {
   let service: UsersService;
   let repo: Repository<User>;
   let shopService: ShopService;
+  let subscriptionPlanService: SubscriptionPlanService;
 
   const mockUserRepo = {
     findOne: jest.fn(),
@@ -25,18 +27,24 @@ describe('UsersService', () => {
     findOne: jest.fn(),
   };
 
+  const mockSubscriptionPlanService = {
+    validateLimit: jest.fn().mockResolvedValue(undefined),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         { provide: getRepositoryToken(User), useValue: mockUserRepo },
         { provide: ShopService, useValue: mockShopService },
+        { provide: SubscriptionPlanService, useValue: mockSubscriptionPlanService },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
     repo = module.get<Repository<User>>(getRepositoryToken(User));
     shopService = module.get<ShopService>(ShopService);
+    subscriptionPlanService = module.get<SubscriptionPlanService>(SubscriptionPlanService);
   });
 
   it('should be defined', () => {
@@ -55,14 +63,16 @@ describe('UsersService', () => {
         assigned_shop_id: 1,
       };
 
-      mockUserRepo.findOne.mockResolvedValueOnce(null); // username
-      mockUserRepo.findOne.mockResolvedValueOnce(null); // email
+      mockUserRepo.findOne
+        .mockResolvedValueOnce(null) // check username
+        .mockResolvedValueOnce(null); // check email
       mockShopService.findOne.mockResolvedValue({ shop_id: 1 });
       mockUserRepo.create.mockReturnValue(dto);
       mockUserRepo.save.mockResolvedValue({ ...dto, user_id: 1 });
 
       const result = await service.create(dto);
       expect(result.user_id).toEqual(1);
+      expect(mockSubscriptionPlanService.validateLimit).toHaveBeenCalledWith('user');
     });
 
     it('should throw ConflictException if username exists', async () => {

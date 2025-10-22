@@ -1,4 +1,4 @@
-import { Shop } from 'src/modules/shop/shop.entity';
+import { Shop } from '../../shop/shop.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

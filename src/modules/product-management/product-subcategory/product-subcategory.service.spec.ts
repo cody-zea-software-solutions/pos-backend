@@ -25,7 +25,7 @@ describe('ProductSubcategoryService', () => {
     sort_order: 0,
     is_active: true,
     created_at: new Date(),
-    default_hsn_code:'',
+    default_hsn_code: '',
     default_gst_rate: 0,
     category: mockCategory as any,
     products: [],
@@ -57,6 +57,11 @@ describe('ProductSubcategoryService', () => {
     categoryService = module.get(ProductCategoryService);
   });
 
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  // ---------------- CREATE ----------------
   describe('create', () => {
     it('should throw conflict if subcategory_code exists', async () => {
       repo.findOne.mockResolvedValue(mockSubcategory);
@@ -100,6 +105,7 @@ describe('ProductSubcategoryService', () => {
     });
   });
 
+  // ---------------- FIND ALL ----------------
   describe('findAll', () => {
     it('should return all subcategories', async () => {
       repo.find.mockResolvedValue([mockSubcategory]);
@@ -109,6 +115,7 @@ describe('ProductSubcategoryService', () => {
     });
   });
 
+  // ---------------- FIND ONE ----------------
   describe('findOne', () => {
     it('should throw not found if missing', async () => {
       repo.findOne.mockResolvedValue(null);
@@ -122,13 +129,19 @@ describe('ProductSubcategoryService', () => {
     });
   });
 
+  // ---------------- UPDATE ----------------
   describe('update', () => {
     it('should throw conflict if code already exists', async () => {
-      repo.findOne
-        .mockResolvedValueOnce(mockSubcategory) // current
-        .mockResolvedValueOnce(mockSubcategory); // duplicate
+      const currentSubcategory = { ...mockSubcategory, subcategory_id: 1 };
+      const duplicateSubcategory = { ...mockSubcategory, subcategory_id: 2 }; // different ID
+
+      // first call: find current subcategory by ID
+      repo.findOne.mockResolvedValueOnce(currentSubcategory);
+      // second call: check duplicate code
+      repo.findOne.mockResolvedValueOnce(duplicateSubcategory);
+
       await expect(
-        service.update(1, { subcategory_code: 'SUB001' } as any),
+        service.update(1, { subcategory_code: 'NEWCODE' } as any),
       ).rejects.toThrow(ConflictException);
     });
 
@@ -143,6 +156,7 @@ describe('ProductSubcategoryService', () => {
     });
   });
 
+  // ---------------- REMOVE ----------------
   describe('remove', () => {
     it('should remove subcategory', async () => {
       repo.findOne.mockResolvedValue(mockSubcategory);

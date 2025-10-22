@@ -5,7 +5,7 @@ import { Business } from '../business/business.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, ObjectLiteral } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service'; // 👈 added import
+import { SubscriptionPlanService } from '../subscription-plan/subscription-plan.service';
 
 // ---------- MOCK REPOSITORY FACTORY ----------
 type MockRepo<T extends ObjectLiteral = any> = {
@@ -24,11 +24,13 @@ describe('ShopService', () => {
   let service: ShopService;
   let shopRepo: MockRepo<Shop>;
   let businessRepo: MockRepo<Business>;
-  let subscriptionPlanService: any; // 👈 using "any" to avoid TS strict typing issue
+  let subscriptionPlanService: any;
 
   beforeEach(async () => {
+    // ✅ Added missing validateLimit mock
     subscriptionPlanService = {
       getDefaultPlan: jest.fn().mockResolvedValue({ plan_id: 1, name: 'Basic Plan' }),
+      validateLimit: jest.fn().mockResolvedValue(true),
     } as any;
 
     const module: TestingModule = await Test.createTestingModule({
@@ -36,7 +38,7 @@ describe('ShopService', () => {
         ShopService,
         { provide: getRepositoryToken(Shop), useValue: createMockRepo<Shop>() },
         { provide: getRepositoryToken(Business), useValue: createMockRepo<Business>() },
-        { provide: SubscriptionPlanService, useValue: subscriptionPlanService }, // 👈 added mock
+        { provide: SubscriptionPlanService, useValue: subscriptionPlanService },
       ],
     }).compile();
 
@@ -63,6 +65,7 @@ describe('ShopService', () => {
 
       const result = await service.create(dto as any);
 
+      expect(subscriptionPlanService.validateLimit).toHaveBeenCalledWith('shop');
       expect(businessRepo.findOne).toHaveBeenCalledWith({
         where: { business_id: dto.business_id },
       });

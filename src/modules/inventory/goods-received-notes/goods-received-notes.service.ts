@@ -2,10 +2,10 @@ import { BadRequestException, ConflictException, forwardRef, Inject, Injectable,
 import { InjectRepository } from '@nestjs/typeorm';
 import { GoodsReceivedNote, GrnStatus } from './goods-received-note.entity';
 import { Repository } from 'typeorm';
-import { ShopService } from 'src/modules/shop/shop.service';
+import { ShopService } from '../../shop/shop.service';
 import { SupplierService } from '../supplier/supplier.service';
 import { PurchaseOrdersService } from '../purchase-orders/purchase-orders.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { SupplierOutstandingsService } from '../supplier-outstandings/supplier-outstandings.service';
 import { CreateGoodsReceivedNoteDto } from './dto/create-goods-received-note.dto';
 import { SupplierOutstandingStatus } from '../supplier-outstandings/supplier-outstanding.entity';

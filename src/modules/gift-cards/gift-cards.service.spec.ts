@@ -14,8 +14,8 @@ const mockGiftCard: GiftCard = {
   current_balance: 100,
   issue_date: new Date(),
   expiry_date: new Date(),
-  issued_to: null as unknown as any,  // 👈 cast
-  issued_by: null as unknown as any,      // 👈 cast
+  issued_to: null as unknown as any,  
+  issued_by: null as unknown as any,      
   status: 'ACTIVE',
   last_used: null as unknown as Date,
 
