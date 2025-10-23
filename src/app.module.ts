@@ -46,6 +46,8 @@ import { BatchesModule } from './modules/inventory/batches/batches.module';
 import { ShopInventoryModule } from './modules/inventory/shop-inventory/shop-inventory.module';
 import { BatchMovementsModule } from './modules/inventory/batch-movements/batch-movements.module';
 import { GstRatesModule } from './modules/gst-management/gst-rates/gst-rates.module';
+import { GstTransactionsModule } from './modules/gst-management/gst-transactions/gst-transactions.module';
+import { GstItemDetailsModule } from './modules/gst-management/gst-item-details/gst-item-details.module';
 
 @Module({
   imports: [
@@ -149,8 +151,11 @@ import { GstRatesModule } from './modules/gst-management/gst-rates/gst-rates.mod
 
     BatchMovementsModule,
 
-    
+    GstTransactionsModule,
+
     GstRatesModule,
+
+    GstItemDetailsModule,
   ],
 
 })
