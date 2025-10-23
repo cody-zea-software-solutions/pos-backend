@@ -48,8 +48,10 @@ import { BatchMovementsModule } from './modules/inventory/batch-movements/batch-
 import { GstRatesModule } from './modules/gst-management/gst-rates/gst-rates.module';
 import { GstTransactionsModule } from './modules/gst-management/gst-transactions/gst-transactions.module';
 import { GstItemDetailsModule } from './modules/gst-management/gst-item-details/gst-item-details.module';
+import { GstReturnModule } from './modules/gst-management/gst-return/gst-return.module';  //new update 
 import { ConsignmentStockModule } from './modules/inventory/consignment-stock/consignment-stock.module';
 import { ConsignmentSettlementsModule } from './modules/inventory/consignment-settlements/consignment-settlements.module';
+
 
 @Module({
   imports: [
@@ -162,6 +164,8 @@ import { ConsignmentSettlementsModule } from './modules/inventory/consignment-se
     ConsignmentStockModule,
 
     ConsignmentSettlementsModule,
+
+    GstReturnModule,
   ],
 
 })
