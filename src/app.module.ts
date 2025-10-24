@@ -51,6 +51,7 @@ import { GstItemDetailsModule } from './modules/gst-management/gst-item-details/
 import { GstReturnModule } from './modules/gst-management/gst-return/gst-return.module';  //new update 
 import { ConsignmentStockModule } from './modules/inventory/consignment-stock/consignment-stock.module';
 import { ConsignmentSettlementsModule } from './modules/inventory/consignment-settlements/consignment-settlements.module';
+import { InventoryReportsModule } from './modules/inventory/inventory-reports/inventory-reports.module';
 
 
 @Module({
@@ -166,6 +167,8 @@ import { ConsignmentSettlementsModule } from './modules/inventory/consignment-se
     ConsignmentSettlementsModule,
 
     GstReturnModule,
+
+    InventoryReportsModule,
   ],
 
 })
