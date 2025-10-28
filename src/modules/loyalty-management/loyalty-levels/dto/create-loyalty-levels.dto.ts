@@ -10,8 +10,13 @@ export class CreateLoyaltyLevelsDto {
   @IsInt()
   max_points_limit: number;
 
+  @IsOptional()
   @IsNumber()
-  discount_percentage: number;
+  discount_percentage?: number;
+
+  @IsOptional()
+  @IsNumber()
+  points_rate?: number;
 
   @IsOptional()
   @IsString()

@@ -14,7 +14,10 @@ export class LoyaltyLevel {
   @Column({ type: 'int' })
   max_points_limit: number;
 
-  @Column({ type: 'decimal', precision: 5, scale: 2 })
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
+  points_rate: number;
+
+  @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   discount_percentage: number;
 
   @Column({ type: 'text', nullable: true })
