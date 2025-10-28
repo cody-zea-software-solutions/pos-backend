@@ -7,9 +7,10 @@ import { ProductVariationModule } from 'src/modules/product-management/product-v
 import { ProductModule } from 'src/modules/product-management/product/product.module';
 import { ConsignorModule } from 'src/modules/inventory/consignor/consignor.module';
 import { TransactionsModule } from '../transactions/transactions.module';
+import { ShopInventoryModule } from 'src/modules/inventory/shop-inventory/shop-inventory.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TransactionItem]), ProductVariationModule, ProductModule, ConsignorModule, TransactionsModule],
+  imports: [TypeOrmModule.forFeature([TransactionItem]), ProductVariationModule, ProductModule, ConsignorModule, TransactionsModule, ShopInventoryModule,],
   providers: [TransactionItemsService],
   controllers: [TransactionItemsController],
   exports: [TransactionItemsService],

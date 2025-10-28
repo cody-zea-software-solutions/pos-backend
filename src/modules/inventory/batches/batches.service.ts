@@ -97,4 +97,18 @@ export class BatchesService {
         const batch = await this.findOne(id);
         await this.batchRepo.remove(batch);
     }
+
+    async deductQuantity(batchId: number, qty: number): Promise<void> {
+        const batch = await this.findOne(batchId);
+        if (!batch) throw new NotFoundException(`Batch ${batchId} not found`);
+
+        if (batch.current_quantity < qty) {
+            throw new ConflictException(
+                `Insufficient quantity in batch ${batch.batch_number}`,
+            );
+        }
+
+        batch.current_quantity -= qty;
+        await this.batchRepo.save(batch);
+    }
 }
