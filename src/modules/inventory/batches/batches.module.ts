@@ -3,10 +3,10 @@ import { BatchesService } from './batches.service';
 import { BatchesController } from './batches.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Batch } from './batches.entity';
-import { ProductModule } from 'src/modules/product-management/product/product.module';
-import { ProductVariationModule } from 'src/modules/product-management/product-variation/product-variation.module';
+import { ProductModule } from '../../product-management/product/product.module';
+import { ProductVariationModule } from '../../product-management/product-variation/product-variation.module';
 import { SupplierModule } from '../supplier/supplier.module';
-import { UsersModule } from 'src/modules/users/users.module';
+import { UsersModule } from '../../users/users.module';
 import { ConsignorModule } from '../consignor/consignor.module';
 
 @Module({

@@ -2,11 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { BatchMovement } from './batch-movement.entity';
 import { Batch } from '../batches/batches.entity';
-import { Shop } from 'src/modules/shop/shop.entity';
-import { User } from 'src/modules/users/user.entity';
+import { Shop } from '../../shop/shop.entity';
+import { User } from '../../users/user.entity';
 import { Repository } from 'typeorm';
 import { ShopInventory } from '../shop-inventory/shop-inventory.entity';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { CreateBatchMovementDto } from './dto/create-batch-movement.dto';
 import { UpdateBatchMovementDto } from './dto/update-batch-movement.dto';
 

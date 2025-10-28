@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ConsignmentSettlement } from './consignment-settlement.entity';
 import { Repository } from 'typeorm';
 import { ConsignorService } from '../consignor/consignor.service';
-import { ShopService } from 'src/modules/shop/shop.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { ShopService } from '../../shop/shop.service';
+import { UsersService } from '../../users/users.service';
 import { CreateConsignmentSettlementDto } from './dto/create-consignment-settlement.dto';
 import { UpdateConsignmentSettlementDto } from './dto/update-consignment-settlement.dto';
 

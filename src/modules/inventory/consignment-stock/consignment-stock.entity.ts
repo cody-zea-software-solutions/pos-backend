@@ -1,8 +1,8 @@
-import { ProductVariation } from 'src/modules/product-management/product-variation/product-variation.entity';
-import { Product } from 'src/modules/product-management/product/product.entity';
+import { ProductVariation } from '../../product-management/product-variation/product-variation.entity';
+import { Product } from '../../product-management/product/product.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Consignor } from '../consignor/consignor.entity';
-import { Shop } from 'src/modules/shop/shop.entity';
+import { Shop } from '../../shop/shop.entity';
 
 @Entity('consignment_stock')
 export class ConsignmentStock {

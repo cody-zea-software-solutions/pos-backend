@@ -2,11 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShopInventory } from './shop-inventory.entity';
 import { Repository } from 'typeorm';
-import { ShopService } from 'src/modules/shop/shop.service';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
+import { ShopService } from '../../shop/shop.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
 import { BatchesService } from '../batches/batches.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { ConsignorService } from '../consignor/consignor.service';
 import { CreateShopInventoryDto } from './dto/create-shop-inventory.dto';
 import { UpdateShopInventoryDto } from './dto/update-shop-inventory.dto';

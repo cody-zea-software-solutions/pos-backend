@@ -4,8 +4,8 @@ import { ConsignmentSettlementsController } from './consignment-settlements.cont
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConsignmentSettlement } from './consignment-settlement.entity';
 import { ConsignorModule } from '../consignor/consignor.module';
-import { ShopModule } from 'src/modules/shop/shop.module';
-import { UsersModule } from 'src/modules/users/users.module';
+import { ShopModule } from '../../shop/shop.module';
+import { UsersModule } from '../../users/users.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ConsignmentSettlement]),

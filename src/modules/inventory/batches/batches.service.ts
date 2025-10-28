@@ -2,10 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Batch } from './batches.entity';
 import { Repository } from 'typeorm';
-import { ProductService } from 'src/modules/product-management/product/product.service';
-import { ProductVariationService } from 'src/modules/product-management/product-variation/product-variation.service';
+import { ProductService } from '../../product-management/product/product.service';
+import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
 import { SupplierService } from '../supplier/supplier.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../users/users.service';
 import { ConsignorService } from '../consignor/consignor.service';
 import { CreateBatchDto } from './dto/create-batch.dto';
 import { UpdateBatchDto } from './dto/update-batch.dto';

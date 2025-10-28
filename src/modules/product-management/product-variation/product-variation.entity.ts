@@ -10,8 +10,8 @@ import {
 import { Product } from '../product/product.entity';
 import { TransactionItem } from '../../pos-transactions/transaction-items/transaction-item.entity';
 import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
-import { Batch } from 'src/modules/inventory/batches/batches.entity';
-import { ShopInventory } from 'src/modules/inventory/shop-inventory/shop-inventory.entity';
+import { Batch } from '../../inventory/batches/batches.entity';
+import { ShopInventory } from '../../inventory/shop-inventory/shop-inventory.entity';
 
 @Entity('product_variations')
 export class ProductVariation {
