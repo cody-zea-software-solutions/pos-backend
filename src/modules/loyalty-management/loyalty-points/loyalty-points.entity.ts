@@ -44,16 +44,16 @@ export class LoyaltyPoints {
   @JoinColumn({ name: 'created_by_user' })
   createdBy: User;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   points_earned: number;
 
   @Column({ type: 'int', default: 0 })
   points_redeemed: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50 , nullable: true})
   transaction_type: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   transaction_ref: string;
 
   @CreateDateColumn({ type: 'timestamp' })
