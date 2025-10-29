@@ -19,18 +19,21 @@ export class CreateLoyaltyPointsDto {
   @IsInt()
   created_by_user: number;
 
+  @IsOptional()
   @IsInt()
-  points_earned: number;
+  points_earned?: number;
 
   @IsOptional()
   @IsInt()
   points_redeemed?: number;
 
+  @IsOptional()
   @IsString()
-  transaction_type: string;
+  transaction_type?: string;
 
+  @IsOptional()
   @IsString()
-  transaction_ref: string;
+  transaction_ref?: string;
 
   @IsOptional()
   @IsString()
