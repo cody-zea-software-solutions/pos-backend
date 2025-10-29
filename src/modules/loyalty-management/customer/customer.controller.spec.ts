@@ -25,7 +25,7 @@ describe('CustomerController', () => {
     customer_type: CustomerType.INDIVIDUAL,
     is_active: true,
     total_points: 0,
-    current_level: 0,
+   // current_level: 0,
     last_scan: null,
     preferred_shop: '',
     preferred_counter: '',

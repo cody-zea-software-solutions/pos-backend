@@ -5,12 +5,17 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { LoyaltyPoints } from '../loyalty-points/loyalty-points.entity';
 import { CustomerRewards } from '../customer-rewards/customer-rewards.entity';
 import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../../refund-process/refund/refund.entity';
 import { GiftCard } from '../../gift-cards/gift-card.entity';
+import { LoyaltyLevel } from '../loyalty-levels/loyalty-levels.entity';
+import { Shop } from '../../shop/shop.entity';
+import { Counter } from '../../counter/counter.entity';
 export enum Gender {
   MALE = 'M',
   FEMALE = 'F',
@@ -83,23 +88,28 @@ export class Customer {
   @Column({ type: 'int', default: 0 })
   total_points: number;
 
-  @Column({ type: 'int', default: 0 })
-  current_level: number;
-
   @Column({ type: 'timestamp', nullable: true })
   last_scan: Date | null;
 
-  @Column({ nullable: true })
-  preferred_shop: string;
-
-  @Column({ nullable: true })
-  preferred_counter: string;
 
   @Column({ type: 'int', default: 0 })
   total_visits: number;
+  
+  @Column({ type: 'int', default: 0 })
+  available_points:number;
 
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   total_spent: number;
+  
+  
+ @ManyToOne(() => LoyaltyLevel, (loyaltyLevel) => loyaltyLevel.customers, {
+  eager: true,
+  nullable: true,
+  
+})
+@JoinColumn({ name: 'current_level_id' })
+current_level_id?: LoyaltyLevel | null;
+
 
   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.customer)
   loyaltyPoints: LoyaltyPoints[];
@@ -116,4 +126,15 @@ export class Customer {
   @OneToMany(() => GiftCard, (giftCard) => giftCard.issued_to)
   gift_cards: GiftCard[];
 
+  @ManyToOne(() => Shop, (shop) => shop.customers, { onDelete: 'CASCADE',eager: true,
+  nullable: true, })
+  @JoinColumn({ name: 'preferred_shop' })
+  preferred_shop?: Shop ;
+
+  
+  @ManyToOne(() => Counter, (counter) => counter.customers, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'preferred_counter' })
+  preferred_counter?: Counter;
 }

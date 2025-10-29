@@ -22,6 +22,7 @@ import { SupplierOutstanding } from '../inventory/supplier-outstandings/supplier
 import { SupplierPayment } from '../inventory/supplier-payments/supplier-payment.entity';
 import { ShopInventory } from '../inventory/shop-inventory/shop-inventory.entity';
 import { BatchMovement } from '../inventory/batch-movements/batch-movement.entity';
+import {Customer} from '../loyalty-management/customer/customer.entity';
 @Entity('shops')
 export class Shop {
   @PrimaryGeneratedColumn()
@@ -140,7 +141,12 @@ export class Shop {
   // Relationships with BatchMovements
   @OneToMany(() => BatchMovement, (batchMovement) => batchMovement.from_shop)
   batch_movements_from: BatchMovement[];
+
+
   @OneToMany(() => BatchMovement, (batchMovement) => batchMovement.to_shop)
   batch_movements_to: BatchMovement[];
 
+  //Relati. custo
+  @OneToMany(() => Customer, (customer) => customer.preferred_shop)
+  customers: Customer[];
 }

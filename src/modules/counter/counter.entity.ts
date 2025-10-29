@@ -15,6 +15,7 @@ import { CustomerRewards } from '../loyalty-management/customer-rewards/customer
 import { Promotion } from '../promotion/promotion.entity';
 import { Transaction } from '../pos-transactions/transactions/transaction.entity';
 import { Refund } from '../refund-process/refund/refund.entity';
+import { Customer } from '../loyalty-management/customer/customer.entity'; 
 @Entity('counters')
 export class Counter {
   @PrimaryGeneratedColumn()
@@ -93,5 +94,8 @@ export class Counter {
 
   @OneToMany(() => Refund, (refund) => refund.counter)
   refunds: Refund[];
+
+  @OneToMany(() => Customer, (customer) => customer.preferred_counter)
+  customers: Customer[];
 
 }

@@ -52,7 +52,8 @@ import { GstReturnModule } from './modules/gst-management/gst-return/gst-return.
 import { ConsignmentStockModule } from './modules/inventory/consignment-stock/consignment-stock.module';
 import { ConsignmentSettlementsModule } from './modules/inventory/consignment-settlements/consignment-settlements.module';
 import { InventoryReportsModule } from './modules/inventory/inventory-reports/inventory-reports.module';
-
+import { CashDrawerTransactionModule } from './modules/cash-drawer-process/cash-drawer-transaction/cash-drawer-transaction.module';
+import { CashDrawerRollbacksModule } from './modules/cash-drawer-process/cash-drawer-rollbacks/cash-drawer-rollbacks.module';
 
 @Module({
   imports: [
@@ -169,6 +170,10 @@ import { InventoryReportsModule } from './modules/inventory/inventory-reports/in
     GstReturnModule,
 
     InventoryReportsModule,
+
+   CashDrawerTransactionModule,
+
+   CashDrawerRollbacksModule
   ],
 
 })

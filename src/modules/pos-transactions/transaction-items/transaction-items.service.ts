@@ -7,7 +7,7 @@ import { TransactionsService } from '../transactions/transactions.service';
 import { ProductService } from '../../product-management/product/product.service';
 import { ProductVariationService } from '../../product-management/product-variation/product-variation.service';
 import { ConsignorService } from '../../inventory/consignor/consignor.service';
-import { ShopInventoryService } from 'src/modules/inventory/shop-inventory/shop-inventory.service';
+import { ShopInventoryService } from '../../inventory/shop-inventory/shop-inventory.service';
 
 @Injectable()
 export class TransactionItemsService {

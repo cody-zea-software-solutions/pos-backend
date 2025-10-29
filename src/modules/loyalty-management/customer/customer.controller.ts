@@ -1,47 +1,35 @@
-import { Controller ,
-  Get,
-  Post,
-  Body,
-  Param,
-  Put,
-  Delete,
-  Query,
-  ParseIntPipe, } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { Customer } from './customer.entity';
 
-
-@Controller('customer')
+@Controller('customers')
 export class CustomerController {
-
- constructor(private readonly svc: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) {}
 
   @Post()
-  create(@Body() dto: CreateCustomerDto) {
-    return this.svc.create(dto);
+  create(@Body() dto: CreateCustomerDto): Promise<Customer> {
+    return this.customerService.create(dto);
   }
 
   @Get()
-  list(@Query('q') q?: string) {
-    // optional quick search by qr code
-    if (q) return this.svc.findByQRCode(q);
-    return this.svc.findAll();
+  findAll(): Promise<Customer[]> {
+    return this.customerService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.svc.findOne(id);
+  findOne(@Param('id') id: string): Promise<Customer> {
+    return this.customerService.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCustomerDto) {
-    return this.svc.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateCustomerDto): Promise<Customer> {
+    return this.customerService.update(+id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.svc.remove(id);
+  remove(@Param('id') id: string): Promise<void> {
+    return this.customerService.remove(+id);
   }
-    
 }

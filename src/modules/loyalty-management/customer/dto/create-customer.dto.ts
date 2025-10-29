@@ -7,6 +7,7 @@ import {
   IsDateString,
   IsNumber,
   IsBoolean,
+  
 } from 'class-validator';
 import { Gender, CustomerType } from '../customer.entity';
 
@@ -68,19 +69,18 @@ export class CreateCustomerDto {
 
   @IsOptional()
   @IsNumber()
-  current_level?: number;
+  current_level_id?: number;
 
   @IsOptional()
   @IsDateString()
   last_scan?: string;
 
-  @IsOptional()
-  @IsString()
-  preferred_shop?: string;
+   @IsNumber()
+   preferred_shop: number;
 
   @IsOptional()
-  @IsString()
-  preferred_counter?: string;
+  @IsNumber()
+  preferred_counter?: number;
 
   @IsOptional()
   @IsNumber()
@@ -88,4 +88,8 @@ export class CreateCustomerDto {
 
   @IsOptional()
   total_spent?: number;
+
+  @IsOptional()
+  @IsNumber()
+  available_points?:number;
 }
