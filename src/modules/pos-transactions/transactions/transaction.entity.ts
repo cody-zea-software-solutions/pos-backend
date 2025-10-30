@@ -31,7 +31,7 @@ export class Transaction {
   @JoinColumn({ name: 'counter_id' })
   counter: Counter;
 
-  @ManyToOne(() => Customer, (customer) => customer.transactions, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Customer, (customer) => customer.transactions, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
@@ -56,10 +56,10 @@ export class Transaction {
   @Column('decimal', { precision: 12, scale: 2, default: 0 })
   change_amount: number;
 
-  @Column()
+  @Column({ nullable: true})
   payment_status: string; // PAID / PARTIAL / UNPAID
 
-  @Column()
+  @Column({ nullable: true})
   transaction_type: string; // SALE / RETURN / EXCHANGE
 
   @ManyToOne(() => User, (user) => user.transactions, { onDelete: 'SET NULL' })

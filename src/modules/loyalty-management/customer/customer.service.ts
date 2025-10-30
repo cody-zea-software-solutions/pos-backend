@@ -7,6 +7,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { LoyaltyLevel } from '../loyalty-levels/loyalty-levels.entity';
 import { Shop } from '../../shop/shop.entity';
 import { Counter } from '../../counter/counter.entity';
+import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
 
 @Injectable()
 export class CustomerService {
@@ -22,43 +23,75 @@ export class CustomerService {
 
     @InjectRepository(Counter)
     private readonly counterRepository: Repository<Counter>,
-  ) {}
+  ) { }
 
   // ------------------- CREATE -------------------
   async create(dto: CreateCustomerDto): Promise<Customer> {
-    const existingQr = await this.customerRepository.findOne({ where: { qr_code: dto.qr_code } });
+    // Check for duplicate QR
+    const existingQr = await this.customerRepository.findOne({
+      where: { qr_code: dto.qr_code },
+    });
     if (existingQr) throw new ConflictException('QR Code already exists');
 
+    // Check duplicate email
     if (dto.email) {
-      const existingEmail = await this.customerRepository.findOne({ where: { email: dto.email } });
-      if (existingEmail) throw new ConflictException('Email already registered');
+      const existingEmail = await this.customerRepository.findOne({
+        where: { email: dto.email },
+      });
+      if (existingEmail)
+        throw new ConflictException('Email already registered');
     }
 
-    const shop = await this.shopRepository.findOne({ where: { shop_id: dto.preferred_shop } });
+    // Validate shop
+    const shop = await this.shopRepository.findOne({
+      where: { shop_id: dto.preferred_shop },
+    });
     if (!shop) throw new NotFoundException(`Shop ${dto.preferred_shop} not found`);
 
+    // Validate counter
     let counter: Counter | undefined;
     if (dto.preferred_counter) {
-      const foundCounter = await this.counterRepository.findOne({ where: { counter_id: Number(dto.preferred_counter) } });
+      const foundCounter = await this.counterRepository.findOne({
+        where: { counter_id: Number(dto.preferred_counter) },
+      });
       counter = foundCounter ?? undefined;
-      if (!counter) throw new NotFoundException(`Counter ${dto.preferred_counter} not found`);
+      if (!counter)
+        throw new NotFoundException(`Counter ${dto.preferred_counter} not found`);
     }
 
+    // Determine loyalty level
     let loyaltyLevel: LoyaltyLevel | undefined;
+
     if (dto.current_level_id) {
-      const foundLevel = await this.loyaltyLevelRepository.findOne({ where: { level_id: dto.current_level_id } });
-      loyaltyLevel = foundLevel ?? undefined;
-      if (!loyaltyLevel) throw new NotFoundException(`Loyalty level ${dto.current_level_id} not found`);
+      // If level provided, verify it
+      const foundLevel = await this.loyaltyLevelRepository.findOne({
+        where: { level_id: dto.current_level_id },
+      });
+      if (!foundLevel)
+        throw new NotFoundException(`Loyalty level ${dto.current_level_id} not found`);
+      loyaltyLevel = foundLevel;
+    } else {
+      // If not provided, assign the lowest level by min_points_required
+      const lowestLevel = await this.loyaltyLevelRepository.find({
+        order: { min_points_required: 'ASC' },
+        take: 1,
+      });
+
+      if (lowestLevel && lowestLevel.length > 0) {
+        loyaltyLevel = lowestLevel[0];
+      }
     }
 
+    // Create the customer entity
     const customer: Customer = this.customerRepository.create({
       ...dto,
       preferred_shop: shop,
-      preferred_counter: counter, 
-      current_level_id: loyaltyLevel,
+      preferred_counter: counter,
+      current_level_id: loyaltyLevel ?? null,
     });
 
-    return this.customerRepository.save(customer);
+    // Save
+    return await this.customerRepository.save(customer);
   }
 
   // ------------------- READ -------------------
@@ -116,4 +149,62 @@ export class CustomerService {
     const customer = await this.findOne(id);
     await this.customerRepository.remove(customer);
   }
+
+  // ------------------- UPDATE AFTER TRANSACTION -------------------
+  async updateAfterTransaction(transaction: Transaction): Promise<void> {
+    if (!transaction.customer) return; // skip if no customer linked
+
+    // Ensure we have full customer object
+    const customer =
+      typeof transaction.customer === 'object'
+        ? transaction.customer
+        : await this.findOne(transaction.customer as any);
+
+    const subtotal = Number(transaction.subtotal ?? 0);
+    const earnedPoints = Number(transaction.loyalty_points_earned ?? 0);
+    const redeemedPoints = Number(transaction.loyalty_points_redeemed ?? 0);
+
+    // Update totals
+    customer.total_spent = Number(customer.total_spent ?? 0) + subtotal;
+    customer.total_visits = Number(customer.total_visits ?? 0) + 1;
+    customer.total_points = Number(customer.total_points ?? 0) + earnedPoints;
+    customer.available_points =
+      Number(customer.available_points ?? 0) + earnedPoints - redeemedPoints;
+
+    // Prevent available_points from going negative
+    if (customer.available_points < 0) customer.available_points = 0;
+
+    // Check and update loyalty level
+    const allLevels = await this.loyaltyLevelRepository.find({
+      order: { min_points_required: 'ASC' },
+    });
+
+    if (allLevels && allLevels.length > 0) {
+      // Find the highest matching level
+      const newLevel = allLevels.find(
+        (lvl) =>
+          customer.total_points >= lvl.min_points_required &&
+          customer.total_points <= lvl.max_points_limit,
+      );
+
+      if (newLevel) {
+        // Only update if it’s a new level
+        const currentLevelId =
+          typeof customer.current_level_id === 'object'
+            ? (customer.current_level_id as any).level_id
+            : customer.current_level_id;
+
+        if (currentLevelId !== newLevel.level_id) {
+          customer.current_level_id = newLevel;
+        }
+      }
+    }
+
+    // Update last scan timestamp
+    customer.last_scan = new Date();
+
+    // Save updates
+    await this.customerRepository.save(customer);
+  }
+
 }

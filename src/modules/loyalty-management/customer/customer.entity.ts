@@ -91,25 +91,22 @@ export class Customer {
   @Column({ type: 'timestamp', nullable: true })
   last_scan: Date | null;
 
-
   @Column({ type: 'int', default: 0 })
   total_visits: number;
-  
+
   @Column({ type: 'int', default: 0 })
-  available_points:number;
+  available_points: number;
 
   @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
   total_spent: number;
-  
-  
- @ManyToOne(() => LoyaltyLevel, (loyaltyLevel) => loyaltyLevel.customers, {
-  eager: true,
-  nullable: true,
-  
-})
-@JoinColumn({ name: 'current_level_id' })
-current_level_id?: LoyaltyLevel | null;
 
+  @ManyToOne(() => LoyaltyLevel, (loyaltyLevel) => loyaltyLevel.customers, {
+    eager: true,
+    nullable: true,
+
+  })
+  @JoinColumn({ name: 'current_level_id' })
+  current_level_id?: LoyaltyLevel | null;
 
   @OneToMany(() => LoyaltyPoints, (loyaltyPoints) => loyaltyPoints.customer)
   loyaltyPoints: LoyaltyPoints[];
@@ -126,12 +123,13 @@ current_level_id?: LoyaltyLevel | null;
   @OneToMany(() => GiftCard, (giftCard) => giftCard.issued_to)
   gift_cards: GiftCard[];
 
-  @ManyToOne(() => Shop, (shop) => shop.customers, { onDelete: 'CASCADE',eager: true,
-  nullable: true, })
+  @ManyToOne(() => Shop, (shop) => shop.customers, {
+    onDelete: 'CASCADE', eager: true,
+    nullable: true,
+  })
   @JoinColumn({ name: 'preferred_shop' })
-  preferred_shop?: Shop ;
+  preferred_shop?: Shop;
 
-  
   @ManyToOne(() => Counter, (counter) => counter.customers, {
     onDelete: 'CASCADE',
   })

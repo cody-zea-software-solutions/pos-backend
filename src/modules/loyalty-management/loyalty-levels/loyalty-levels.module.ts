@@ -4,8 +4,9 @@ import { LoyaltyLevelsService } from './loyalty-levels.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoyaltyLevel } from './loyalty-levels.entity';
 @Module({
-   imports: [TypeOrmModule.forFeature([LoyaltyLevel])],
+  imports: [TypeOrmModule.forFeature([LoyaltyLevel])],
   controllers: [LoyaltyLevelsController],
-  providers: [LoyaltyLevelsService]
+  providers: [LoyaltyLevelsService],
+  exports: [LoyaltyLevelsService],
 })
-export class LoyaltyLevelsModule {}
+export class LoyaltyLevelsModule { }

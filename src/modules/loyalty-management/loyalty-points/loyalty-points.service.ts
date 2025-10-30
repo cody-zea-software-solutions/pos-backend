@@ -6,68 +6,31 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoyaltyPoints } from './loyalty-points.entity';
-import { CreateLoyaltyPointsDto } from './dto/create-loyalty-points.dto';
-import { UpdateLoyaltyPointsDto } from './dto/update-loyalty-points.dto';
-import { Customer } from '../customer/customer.entity';
-import { Shop } from '../../shop/shop.entity';
-import { Counter } from '../../counter/counter.entity';
-import { User } from '../../users/user.entity';
+import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
+import { CustomerService } from '../customer/customer.service';
+import { ShopService } from 'src/modules/shop/shop.service';
+import { CounterService } from 'src/modules/counter/counter.service';
+import { UsersService } from 'src/modules/users/users.service';
+
+type RecordFromTransactionInput = {
+  transaction: Transaction;
+  points_earned?: number;
+  points_redeemed?: number;
+  processed_by_user?: number | undefined;
+  description?: string | null;
+  expiry_date?: Date | null;
+};
 
 @Injectable()
 export class LoyaltyPointsService {
   constructor(
     @InjectRepository(LoyaltyPoints)
     private readonly loyaltyPointsRepo: Repository<LoyaltyPoints>,
-    @InjectRepository(Customer)
-    private readonly customerRepo: Repository<Customer>,
-    @InjectRepository(Shop)
-    private readonly shopRepo: Repository<Shop>,
-    @InjectRepository(Counter)
-    private readonly counterRepo: Repository<Counter>,
-    @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
-  ) {}
-
-  async create(dto: CreateLoyaltyPointsDto): Promise<LoyaltyPoints> {
-    // FK existence checks — fail fast with 400 if any is wrong
-    const [customer, shop, counter, createdBy] = await Promise.all([
-      this.customerRepo.findOne({ where: { customer_id: dto.customer_id } }),
-      this.shopRepo.findOne({ where: { shop_id: dto.shop_id } }),
-      this.counterRepo.findOne({ where: { counter_id: dto.counter_id } }),
-      this.userRepo.findOne({ where: { user_id: dto.created_by_user } }),
-    ]);
-
-    if (!customer)
-      throw new BadRequestException(
-        `Invalid customer_id: ${dto.customer_id}`,
-      );
-    if (!shop) throw new BadRequestException(`Invalid shop_id: ${dto.shop_id}`);
-    if (!counter)
-      throw new BadRequestException(`Invalid counter_id: ${dto.counter_id}`);
-    if (!createdBy)
-      throw new BadRequestException(
-        `Invalid created_by_user: ${dto.created_by_user}`,
-      );
-
-    const entity = this.loyaltyPointsRepo.create({
-      // Map only scalar columns
-      points_earned: dto.points_earned,
-      points_redeemed: dto.points_redeemed ?? 0,
-      transaction_type: dto.transaction_type,
-      transaction_ref: dto.transaction_ref,
-      description: dto.description ?? null,
-      expiry_date: dto.expiry_date ? new Date(dto.expiry_date) : null,
-      is_active: dto.is_active ?? true,
-
-      // Proper relation assignment using actual PK prop names
-      customer: { customer_id: customer.customer_id } as Customer,
-      shop: { shop_id: shop.shop_id } as Shop,
-      counter: { counter_id: counter.counter_id } as Counter,
-      createdBy: { user_id: createdBy.user_id } as User,
-    });
-
-    return await this.loyaltyPointsRepo.save(entity);
-  }
+    private readonly customerService: CustomerService,
+    private readonly shopService: ShopService,
+    private readonly counterService: CounterService,
+    private readonly usersService: UsersService,
+  ) { }
 
   async findAll(): Promise<LoyaltyPoints[]> {
     return this.loyaltyPointsRepo.find();
@@ -82,55 +45,54 @@ export class LoyaltyPointsService {
     return row;
   }
 
-  async update(
-    id: number,
-    dto: UpdateLoyaltyPointsDto,
-  ): Promise<LoyaltyPoints> {
-    const row = await this.findOne(id);
-
-    // Update scalar fields only
-    if (dto.points_earned !== undefined) row.points_earned = dto.points_earned;
-    if (dto.points_redeemed !== undefined)
-      row.points_redeemed = dto.points_redeemed;
-    if (dto.transaction_type !== undefined)
-      row.transaction_type = dto.transaction_type;
-    if (dto.transaction_ref !== undefined)
-      row.transaction_ref = dto.transaction_ref;
-    if (dto.description !== undefined)
-      row.description = dto.description ?? null;
-    if (dto.expiry_date !== undefined)
-      row.expiry_date = dto.expiry_date ? new Date(dto.expiry_date) : null;
-    if (dto.is_active !== undefined) row.is_active = dto.is_active;
-
-    
-    
-    if (dto.customer_id !== undefined) {
-      const customer = await this.customerRepo.findOne({ where: { customer_id: dto.customer_id }});
-      if (!customer) throw new BadRequestException(`Invalid customer_id: ${dto.customer_id}`);
-      row.customer = { customer_id: customer.customer_id } as Customer;
-    }
-    if (dto.shop_id !== undefined) {
-      const shop = await this.shopRepo.findOne({ where: { shop_id: dto.shop_id }});
-      if (!shop) throw new BadRequestException(`Invalid shop_id: ${dto.shop_id}`);
-      row.shop = { shop_id: shop.shop_id } as Shop;
-    }
-    if (dto.counter_id !== undefined) {
-      const counter = await this.counterRepo.findOne({ where: { counter_id: dto.counter_id }});
-      if (!counter) throw new BadRequestException(`Invalid counter_id: ${dto.counter_id}`);
-      row.counter = { counter_id: counter.counter_id } as Counter;
-    }
-    if (dto.created_by_user !== undefined) {
-      const user = await this.userRepo.findOne({ where: { user_id: dto.created_by_user }});
-      if (!user) throw new BadRequestException(`Invalid created_by_user: ${dto.created_by_user}`);
-      row.createdBy = { user_id: user.user_id } as User;
-    }
-    
-
-    return this.loyaltyPointsRepo.save(row);
-  }
-
   async remove(id: number): Promise<void> {
     const row = await this.findOne(id);
     await this.loyaltyPointsRepo.remove(row);
+  }
+
+  //Record loyalty points based on a saved Transaction.
+  async recordFromTransaction(input: RecordFromTransactionInput): Promise<LoyaltyPoints> {
+    const { transaction, points_earned = 0, points_redeemed = 0, processed_by_user, description, expiry_date } = input;
+
+    const customer = transaction.customer
+      ? (typeof transaction.customer === 'object' ? transaction.customer : await this.customerService.findOne(transaction.customer as any))
+      : null;
+    if (!customer) {
+      throw new NotFoundException('Transaction has no customer to record loyalty points for');
+    }
+
+    const shop = transaction.shop
+      ? (typeof transaction.shop === 'object' ? transaction.shop : await this.shopService.findOne((transaction.shop as any).shop_id))
+      : null;
+    const counter = transaction.counter
+      ? (typeof transaction.counter === 'object' ? transaction.counter : await this.counterService.findOne((transaction.counter as any).counter_id))
+      : null;
+
+    const createdBy = processed_by_user
+      ? await this.usersService.findOne(processed_by_user)
+      : (transaction.processed_by || null);
+
+    // Create loyalty points entry
+    const lp = this.loyaltyPointsRepo.create({
+      points_earned,
+      points_redeemed,
+      transaction_type: transaction.transaction_type ?? 'SALE',
+      transaction_ref: transaction.transaction_number,
+      transaction_date: transaction.transaction_date ?? new Date(),
+      description: description ?? null,
+      expiry_date: expiry_date ?? null,
+      is_active: true,
+    });
+
+    // Assign relations
+    lp.customer = customer;
+    lp.shop = shop;
+    lp.counter = counter;
+    lp.createdBy = createdBy;
+
+    // Save
+    const savedLp = await this.loyaltyPointsRepo.save(lp);
+
+    return savedLp;
   }
 }

@@ -28,14 +28,14 @@ export class LoyaltyPoints {
     onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'shop_id' })
-  shop: Shop;
+  shop: Shop | null;
 
   @ManyToOne(() => Counter, (counter) => counter.loyaltyPoints, {
     eager: true,
     onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'counter_id' })
-  counter: Counter;
+  counter: Counter | null;
 
   @ManyToOne(() => User, (user) => user.createdLoyaltyPoints, {
     eager: true,

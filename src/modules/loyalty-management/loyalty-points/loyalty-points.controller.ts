@@ -16,11 +16,6 @@ import { UpdateLoyaltyPointsDto } from './dto/update-loyalty-points.dto';
 export class LoyaltyPointsController {
   constructor(private readonly loyaltyPointsService: LoyaltyPointsService) {}
 
-  @Post()
-  create(@Body() dto: CreateLoyaltyPointsDto) {
-    return this.loyaltyPointsService.create(dto);
-  }
-
   @Get()
   findAll() {
     return this.loyaltyPointsService.findAll();
@@ -29,14 +24,6 @@ export class LoyaltyPointsController {
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.loyaltyPointsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateLoyaltyPointsDto,
-  ) {
-    return this.loyaltyPointsService.update(id, dto);
   }
 
   @Delete(':id')

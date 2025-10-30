@@ -3,14 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoyaltyPoints } from './loyalty-points.entity';
 import { LoyaltyPointsController } from './loyalty-points.controller';
 import { LoyaltyPointsService } from './loyalty-points.service';
-import { Customer } from '../customer/customer.entity';
-import { Shop } from '../../shop/shop.entity';
-import { Counter } from '../../counter/counter.entity';
-import { User } from '../../users/user.entity';
+import { CustomerModule } from '../customer/customer.module';
+import { ShopModule } from 'src/modules/shop/shop.module';
+import { CounterModule } from 'src/modules/counter/counter.module';
+import { UsersModule } from 'src/modules/users/users.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([LoyaltyPoints, Customer, Shop, Counter, User]),
+    TypeOrmModule.forFeature([LoyaltyPoints]),
+    CustomerModule, ShopModule, CounterModule, UsersModule,
   ],
   controllers: [LoyaltyPointsController],
   providers: [LoyaltyPointsService],
