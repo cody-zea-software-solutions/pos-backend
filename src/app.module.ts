@@ -54,7 +54,7 @@ import { ConsignmentSettlementsModule } from './modules/inventory/consignment-se
 import { InventoryReportsModule } from './modules/inventory/inventory-reports/inventory-reports.module';
 import { CashDrawerTransactionModule } from './modules/cash-drawer-process/cash-drawer-transaction/cash-drawer-transaction.module';
 import { CashDrawerRollbacksModule } from './modules/cash-drawer-process/cash-drawer-rollbacks/cash-drawer-rollbacks.module';
-
+import { CashDrawerLogsModule } from './modules/cash-drawer-process/cash-drawer-logs/cash-drawer-logs.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -173,7 +173,9 @@ import { CashDrawerRollbacksModule } from './modules/cash-drawer-process/cash-dr
 
    CashDrawerTransactionModule,
 
-   CashDrawerRollbacksModule
+   CashDrawerRollbacksModule,
+
+   CashDrawerLogsModule
   ],
 
 })
