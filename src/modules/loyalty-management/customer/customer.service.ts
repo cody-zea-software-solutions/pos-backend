@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Customer } from './customer.entity';
@@ -46,7 +46,8 @@ export class CustomerService {
     const shop = await this.shopRepository.findOne({
       where: { shop_id: dto.preferred_shop },
     });
-    if (!shop) throw new NotFoundException(`Shop ${dto.preferred_shop} not found`);
+    if (!shop)
+      throw new NotFoundException(`Shop ${dto.preferred_shop} not found`);
 
     // Validate counter
     let counter: Counter | undefined;
@@ -54,32 +55,40 @@ export class CustomerService {
       const foundCounter = await this.counterRepository.findOne({
         where: { counter_id: Number(dto.preferred_counter) },
       });
-      counter = foundCounter ?? undefined;
-      if (!counter)
-        throw new NotFoundException(`Counter ${dto.preferred_counter} not found`);
+      if (!foundCounter)
+        throw new NotFoundException(
+          `Counter ${dto.preferred_counter} not found`,
+        );
+      counter = foundCounter;
     }
 
     // Determine loyalty level
     let loyaltyLevel: LoyaltyLevel | undefined;
 
     if (dto.current_level_id) {
-      // If level provided, verify it
+      // If a specific level is provided, verify it
       const foundLevel = await this.loyaltyLevelRepository.findOne({
         where: { level_id: dto.current_level_id },
       });
       if (!foundLevel)
-        throw new NotFoundException(`Loyalty level ${dto.current_level_id} not found`);
+        throw new NotFoundException(
+          `Loyalty level ${dto.current_level_id} not found`,
+        );
       loyaltyLevel = foundLevel;
     } else {
-      // If not provided, assign the lowest level by min_points_required
+      // If no level provided, get the lowest one by min_points_required
       const lowestLevel = await this.loyaltyLevelRepository.find({
         order: { min_points_required: 'ASC' },
         take: 1,
       });
 
-      if (lowestLevel && lowestLevel.length > 0) {
-        loyaltyLevel = lowestLevel[0];
+      if (!lowestLevel || lowestLevel.length === 0) {
+        throw new BadRequestException(
+          'Cannot create customer because no loyalty levels are defined. Please create at least one loyalty level first.',
+        );
       }
+
+      loyaltyLevel = lowestLevel[0];
     }
 
     // Create the customer entity
@@ -87,10 +96,10 @@ export class CustomerService {
       ...dto,
       preferred_shop: shop,
       preferred_counter: counter,
-      current_level_id: loyaltyLevel ?? null,
+      current_level_id: loyaltyLevel,
     });
 
-    // Save
+    // Save and return
     return await this.customerRepository.save(customer);
   }
 
