@@ -134,6 +134,7 @@ export class ShiftService {
         shift.counter = counter;
 
         counter.current_user = user;
+        counter.status = 'OPEN';
         await this.counterRepo.save(counter);
 
         return this.shiftRepo.save(shift);
@@ -158,6 +159,7 @@ export class ShiftService {
             // Free the counter if assigned
             if (activeShift.counter) {
                 activeShift.counter.current_user = null;
+                activeShift.counter.status = 'CLOSED';
                 await this.counterRepo.save(activeShift.counter);
             }
 

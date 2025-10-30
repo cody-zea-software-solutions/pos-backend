@@ -41,7 +41,7 @@ export class TransactionsService {
         const { shop_id, counter_id, customer_id, processed_by_user, ...data } = dto;
 
         // compute loyalty points (if customer present)
-        let earnedPoints = 0;
+        let autoCalculatedPoints = 0;
         if (customer) {
             // Resolve customer's loyalty level id (supports eager relation object or id)
             let levelId: number | undefined;
@@ -67,11 +67,15 @@ export class TransactionsService {
             const subtotal = Number(data.subtotal ?? 0);
 
             // Calculate points
-            earnedPoints = Math.floor(subtotal * pointsRate);
+            autoCalculatedPoints = Math.floor(subtotal * pointsRate);
+
+            // Combine Auto + Manual
+            const manualPoints = Number(dto.loyalty_points_earned ?? 0);
+            const totalPoints = autoCalculatedPoints + manualPoints;
 
             // attach to entity data so it gets saved with transaction
-            data.loyalty_points_earned = earnedPoints;
-            data.is_loyalty_applied = earnedPoints > 0;
+            data.loyalty_points_earned = totalPoints;
+            data.is_loyalty_applied = totalPoints > 0;
         } else {
             // ensure default fields exist
             data.loyalty_points_earned = 0;

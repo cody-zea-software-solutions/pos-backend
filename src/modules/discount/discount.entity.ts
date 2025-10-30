@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Product } from '../product-management/product/product.entity';
 
 @Entity('discounts')
 export class Discount {
@@ -38,8 +41,12 @@ export class Discount {
   @Column({ nullable: true })
   applicable_to: string; // PRODUCT / BUNDLE / SERVICE etc.
 
-  @Column({ nullable: true })
-  target_id: number; // FK to product/ BUNDLE / SERVICE 
+  @ManyToOne(() => Product, (product) => product.discounts, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'target_id' })
+  target_product: Product; 
 
   @Column({ type: 'int', default: 0 })
   usage_limit_per_customer: number;

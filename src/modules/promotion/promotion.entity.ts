@@ -9,6 +9,7 @@ import {
 import { Shop } from '../shop/shop.entity';
 import { Counter } from '../counter/counter.entity';
 import { User } from '../users/user.entity';
+import { LoyaltyLevel } from '../loyalty-management/loyalty-levels/loyalty-levels.entity';
 
 @Entity('promotions')
 export class Promotion {
@@ -41,9 +42,9 @@ export class Promotion {
   @JoinColumn({ name: 'target_counter_id' })
   counter: Counter;
 
-  // need to change with foreign key reference
-  @Column({ nullable: true})
-  target_level_id: number;
+  @ManyToOne(() => LoyaltyLevel, (level) => level.promotions, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'target_level_id' })
+  loyalty_level: LoyaltyLevel;
 
   @Column({ type: 'text', nullable: true })
   promotion_rules: string;

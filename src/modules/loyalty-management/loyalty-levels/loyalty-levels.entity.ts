@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn,OneToMany } from 'typeorm';
 import { Customer } from '../customer/customer.entity'; 
+import { Promotion } from 'src/modules/promotion/promotion.entity';
 
 @Entity('loyalty_levels')
 export class LoyaltyLevel {
@@ -38,4 +39,7 @@ export class LoyaltyLevel {
 
   @OneToMany(() => Customer, (customer) => customer.current_level_id)
   customers: Customer[];
+
+  @OneToMany(() => Promotion, (promotion) => promotion.loyalty_level)
+  promotions: Promotion[];
 }

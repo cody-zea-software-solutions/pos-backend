@@ -18,6 +18,7 @@ import { TransactionItem } from '../../pos-transactions/transaction-items/transa
 import { RefundItem } from '../../refund-process/refund-items/refund-item.entity';
 import { Batch } from '../../inventory/batches/batches.entity';
 import { ShopInventory } from '../../inventory/shop-inventory/shop-inventory.entity';
+import { Discount } from 'src/modules/discount/discount.entity';
 
 @Entity('products')
 export class Product {
@@ -144,6 +145,9 @@ export class Product {
 
   @OneToMany(() => ShopInventory, (shopInventory) => shopInventory.product)
   shop_inventory: ShopInventory[];
+
+  @OneToMany(() => Discount, (discount) => discount.target_product)
+  discounts: Discount[];
 
   // Default pricing group relation → will implement later
   @Column({ nullable: true })

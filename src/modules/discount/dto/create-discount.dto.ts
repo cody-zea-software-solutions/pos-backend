@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNumber, IsBoolean, IsOptional, IsDateString, IsDate } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsOptional, IsDateString, IsDate, IsInt } from 'class-validator';
 
 export class CreateDiscountDto {
   @IsString()
@@ -36,6 +36,7 @@ export class CreateDiscountDto {
   @IsString()
   applicable_to?: string;
 
+  @IsInt()
   @IsOptional()
   target_id?: number;
 
