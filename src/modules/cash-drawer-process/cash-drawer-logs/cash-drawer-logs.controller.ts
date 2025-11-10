@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, ParseIntPipe } from '@nestjs/common';
 import { CashDrawerLogsService } from './cash-drawer-logs.service';
 import { CreateCashDrawerLogsDto } from './dto/create-cash-drawer-logs.dto';
 import { UpdateCashDrawerLogsDto } from './dto/update-cash-drawer-logs.dto';
@@ -18,17 +18,18 @@ export class CashDrawerLogsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cashDrawerLogsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.cashDrawerLogsService.findOne(id);
   }
-
+/*
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateCashDrawerLogsDto) {
-    return this.cashDrawerLogsService.update(+id, dto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCashDrawerLogsDto) {
+    return this.cashDrawerLogsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cashDrawerLogsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.cashDrawerLogsService.remove(id);
   }
+*/
 }

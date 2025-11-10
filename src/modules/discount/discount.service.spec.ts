@@ -1,115 +1,165 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DiscountService } from './discount.service';
-import { Repository } from 'typeorm';
-import { Discount } from './discount.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Discount } from './discount.entity';
+import { Repository } from 'typeorm';
+import { ProductService } from '../product-management/product/product.service';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import { CreateDiscountDto } from './dto/create-discount.dto';
+import { UpdateDiscountDto } from './dto/update-discount.dto';
 
 describe('DiscountService', () => {
   let service: DiscountService;
-  let repo: Repository<Discount>;
+  let repo: jest.Mocked<Repository<Discount>>;
+  let mockProductService: { findOne: jest.Mock };
 
-  const mockDiscount = {
+  const mockDiscount: Discount = {
     discount_id: 1,
-    discount_name: 'Test Discount',
-    discount_code: 'TEST10',
+    discount_code: 'DISC10',
     discount_type: 'PERCENTAGE',
     discount_value: 10,
-  } as Discount;
-
-  const mockRepo = {
-    findOne: jest.fn(),
-    find: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    remove: jest.fn(),
-  };
+    is_active: true,
+    target_product: { product_id: 1, product_name: 'Laptop' } as any,
+    created_at: new Date(),
+  } as any;
 
   beforeEach(async () => {
+    mockProductService = { findOne: jest.fn() };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DiscountService,
-        { provide: getRepositoryToken(Discount), useValue: mockRepo },
+        { provide: getRepositoryToken(Discount), useValue: {
+            findOne: jest.fn(),
+            find: jest.fn(),
+            create: jest.fn(),
+            save: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
+        { provide: ProductService, useValue: mockProductService },
       ],
     }).compile();
 
     service = module.get<DiscountService>(DiscountService);
-    repo = module.get<Repository<Discount>>(getRepositoryToken(Discount));
+    repo = module.get(getRepositoryToken(Discount));
   });
 
   afterEach(() => jest.clearAllMocks());
 
+  // ──────────────────────────────
   describe('create', () => {
-    it('should create a new discount', async () => {
-      mockRepo.findOne.mockResolvedValue(null);
-      mockRepo.create.mockReturnValue(mockDiscount);
-      mockRepo.save.mockResolvedValue(mockDiscount);
+    const dto: CreateDiscountDto = {
+      discount_code: 'DISC10',
+      discount_type: 'PERCENTAGE',
+      discount_value: 10,
+      target_id: 1,
+    } as any;
 
-      const result = await service.create(mockDiscount);
-      expect(repo.create).toHaveBeenCalledWith(mockDiscount);
-      expect(repo.save).toHaveBeenCalledWith(mockDiscount);
+    it('should throw ConflictException if discount code exists', async () => {
+      repo.findOne.mockResolvedValue(mockDiscount);
+      await expect(service.create(dto)).rejects.toThrow(ConflictException);
+      expect(repo.findOne).toHaveBeenCalled();
+    });
+
+    it('should create and save discount successfully (with target)', async () => {
+      repo.findOne.mockResolvedValue(null);
+      mockProductService.findOne.mockResolvedValue({ product_id: 1, product_name: 'Laptop' });
+      repo.create.mockReturnValue(mockDiscount as any);
+repo.save.mockResolvedValue(mockDiscount as any);
+
+
+      const result = await service.create(dto);
       expect(result).toEqual(mockDiscount);
+      expect(repo.create).toHaveBeenCalled();
+      expect(repo.save).toHaveBeenCalled();
+      expect(mockProductService.findOne).toHaveBeenCalledWith(1);
     });
 
-    it('should throw ConflictException if code exists', async () => {
-      mockRepo.findOne.mockResolvedValue(mockDiscount);
-      await expect(service.create(mockDiscount)).rejects.toThrow(ConflictException);
-    });
+   it('should create discount without target product', async () => {
+  const dtoNoTarget: CreateDiscountDto = { ...dto, target_id: undefined };
+  repo.findOne.mockResolvedValue(null);
+  mockProductService.findOne.mockResolvedValue(null);
+  repo.create.mockReturnValue(dtoNoTarget as any);
+  repo.save.mockResolvedValue(mockDiscount);
+
+  const result = await service.create(dtoNoTarget);
+  expect(result).toEqual(mockDiscount);
+  expect(mockProductService.findOne).not.toHaveBeenCalled();
+});
   });
 
+  // ──────────────────────────────
   describe('findAll', () => {
     it('should return all discounts', async () => {
-      mockRepo.find.mockResolvedValue([mockDiscount]);
+      repo.find.mockResolvedValue([mockDiscount]);
       const result = await service.findAll();
-      expect(repo.find).toHaveBeenCalled();
       expect(result).toEqual([mockDiscount]);
+      expect(repo.find).toHaveBeenCalledWith({
+        relations: ['target_product'],
+        order: { created_at: 'DESC' },
+      });
     });
   });
 
+  // ──────────────────────────────
   describe('findOne', () => {
-    it('should return one discount', async () => {
-      mockRepo.findOne.mockResolvedValue(mockDiscount);
+    it('should return a discount if found', async () => {
+      repo.findOne.mockResolvedValue(mockDiscount);
       const result = await service.findOne(1);
       expect(result).toEqual(mockDiscount);
+      expect(repo.findOne).toHaveBeenCalled();
     });
 
     it('should throw NotFoundException if not found', async () => {
-      mockRepo.findOne.mockResolvedValue(null);
-      await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
+      repo.findOne.mockResolvedValue(null);
+      await expect(service.findOne(99)).rejects.toThrow(NotFoundException);
     });
   });
 
+  // ──────────────────────────────
   describe('update', () => {
-    it('should update discount details', async () => {
-      mockRepo.findOne
-        .mockResolvedValueOnce(mockDiscount) // for findOne(id)
-        .mockResolvedValueOnce(null); // for checking duplicate code
+    const updateDto: UpdateDiscountDto = {
+      discount_code: 'DISC20',
+      discount_value: 20,
+      target_id: 2,
+    } as any;
 
-      mockRepo.save.mockResolvedValue({ ...mockDiscount, discount_name: 'Updated' });
+    it('should throw ConflictException if discount_code exists', async () => {
+      repo.findOne
+        .mockResolvedValueOnce(mockDiscount) // existing discount to update
+        .mockResolvedValueOnce(mockDiscount); // duplicate code
 
-      const result = await service.update(1, { discount_name: 'Updated' });
-      expect(result.discount_name).toBe('Updated');
+      await expect(service.update(1, updateDto)).rejects.toThrow(ConflictException);
     });
 
-    it('should throw ConflictException if discount_code already exists', async () => {
-      mockRepo.findOne
-        .mockResolvedValueOnce(mockDiscount) // findOne(id)
-        .mockResolvedValueOnce(mockDiscount); // duplicate code check
+    it('should update and save successfully', async () => {
+      repo.findOne
+        .mockResolvedValueOnce(mockDiscount) // existing discount
+        .mockResolvedValueOnce(null); // no duplicate
+      mockProductService.findOne.mockResolvedValue({ product_id: 2, product_name: 'Mouse' });
+      repo.save.mockResolvedValue({ ...mockDiscount, discount_code: 'DISC20' });
 
-      await expect(service.update(1, { discount_code: 'TEST10' })).rejects.toThrow(ConflictException);
+      const result = await service.update(1, updateDto);
+      expect(result.discount_code).toBe('DISC20');
+      expect(repo.save).toHaveBeenCalled();
+      expect(mockProductService.findOne).toHaveBeenCalledWith(2);
     });
   });
 
+  // ──────────────────────────────
   describe('remove', () => {
-    it('should remove a discount', async () => {
-      mockRepo.findOne.mockResolvedValue(mockDiscount);
+    it('should remove discount successfully', async () => {
+      repo.findOne.mockResolvedValue(mockDiscount);
+      repo.remove.mockResolvedValue(mockDiscount);
+
       await service.remove(1);
       expect(repo.remove).toHaveBeenCalledWith(mockDiscount);
     });
 
     it('should throw NotFoundException if discount not found', async () => {
-      mockRepo.findOne.mockResolvedValue(null);
-      await expect(service.remove(1)).rejects.toThrow(NotFoundException);
+      repo.findOne.mockResolvedValue(null);
+      await expect(service.remove(999)).rejects.toThrow(NotFoundException);
     });
   });
 });

@@ -1,15 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column,ManyToOne,JoinColumn } from 'typeorm';
+import { User } from '../../users/user.entity';
+import { Shift } from '../../shift/shift.entity';
+import { Counter } from '../../counter/counter.entity';
 
 @Entity({ name: 'cash_drawer_rollbacks' })
 export class CashDrawerRollback {
   @PrimaryGeneratedColumn()
   rollback_id: number;
 
-  @Column({ type: 'int', unique: true })
-  counter_id: number;
-
-  @Column({ type: 'int', unique: true })
-  shift_id: number;
+  @ManyToOne(() => Counter)
+  @JoinColumn({ name: 'counter_id' })
+  counter: Counter;
+  
+  @ManyToOne(() => Shift)
+  @JoinColumn({ name: 'shift_id' })
+  shift: Shift;
 
   @Column({ type: 'decimal', precision: 15, scale: 2 })
   rollback_amount: number;
@@ -26,11 +31,14 @@ export class CashDrawerRollback {
   @Column({ type: 'timestamp' })
   rollback_time: Date;
 
-  @Column({ type: 'int', unique: true })
-  performed_by_user: number;
-
-  @Column({ type: 'int', unique: true })
-  authorized_by_user: number;
+   @ManyToOne(() => User)
+   @JoinColumn({ name: 'performed_by_user' })
+   performed_by_user: User;
+ 
+   @ManyToOne(() => User)
+   @JoinColumn({ name: 'authorized_by_user' })
+   authorized_by_user: User;
+ 
 
   @Column({ type: 'varchar', length: 255 })
   reference_transaction: string;

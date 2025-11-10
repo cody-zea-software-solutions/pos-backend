@@ -84,24 +84,26 @@ describe('ProductUnitsService', () => {
   });
 
   describe('update', () => {
-    it('should throw conflict if unit_name exists', async () => {
-      repo.findOne
-        .mockResolvedValueOnce(mockUnit) // current unit
-        .mockResolvedValueOnce(mockUnit); // duplicate
-      await expect(
-        service.update(1, { unit_name: 'Kilogram' } as any),
-      ).rejects.toThrow(ConflictException);
-    });
+  it('should throw conflict if unit_name exists', async () => {
+    // Current unit (found by ID)
+    repo.findOne
+      .mockResolvedValueOnce(mockUnit) // current unit (Kilogram)
+      .mockResolvedValueOnce(mockUnit); // duplicate with same name (Gram exists)
 
-    it('should update and save unit', async () => {
-      repo.findOne.mockResolvedValueOnce(mockUnit).mockResolvedValueOnce(null);
-      repo.save.mockResolvedValue({ ...mockUnit, unit_name: 'Gram' });
-
-      const result = await service.update(1, { unit_name: 'Gram' } as any);
-      expect(result.unit_name).toEqual('Gram');
-      expect(repo.save).toHaveBeenCalled();
-    });
+    await expect(
+      service.update(1, { unit_name: 'Gram' } as any),
+    ).rejects.toThrow(ConflictException);
   });
+
+  it('should update and save unit', async () => {
+    repo.findOne.mockResolvedValueOnce(mockUnit).mockResolvedValueOnce(null);
+    repo.save.mockResolvedValue({ ...mockUnit, unit_name: 'Gram' });
+
+    const result = await service.update(1, { unit_name: 'Gram' } as any);
+    expect(result.unit_name).toEqual('Gram');
+    expect(repo.save).toHaveBeenCalled();
+  });
+});
 
   describe('remove', () => {
     it('should remove unit', async () => {

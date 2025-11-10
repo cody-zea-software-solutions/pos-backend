@@ -107,25 +107,30 @@ describe('ProductCategoryService', () => {
   });
 
   describe('update', () => {
-    it('should throw conflict if category_code exists', async () => {
-      repo.findOne
-        .mockResolvedValueOnce(mockCategory) // current category
-        .mockResolvedValueOnce(mockCategory); // duplicate code
-      await expect(service.update(1, { category_code: 'CAT001' } as any)).rejects.toThrow(
-        ConflictException,
-      );
-    });
+  it('should throw conflict if category_code exists', async () => {
+    jest.spyOn(service, 'findOne').mockResolvedValue(mockCategory);
+    repo.findOne.mockResolvedValueOnce(mockCategory); // duplicate
 
-    it('should update and save category', async () => {
-      repo.findOne.mockResolvedValueOnce(mockCategory).mockResolvedValueOnce(null);
-      groupService.findOne.mockResolvedValue({ id: 1 });
-      repo.save.mockResolvedValue({ ...mockCategory, category_name: 'Updated' });
-
-      const result = await service.update(1, { category_name: 'Updated', group_id: 1 });
-      expect(result.category_name).toEqual('Updated');
-      expect(repo.save).toHaveBeenCalled();
-    });
+    await expect(
+      service.update(1, { category_code: 'CAT001' } as any),
+    ).rejects.toThrow(ConflictException);
   });
+
+  it('should update and save category', async () => {
+    jest.spyOn(service, 'findOne').mockResolvedValue(mockCategory);
+    repo.findOne.mockResolvedValue(null); // no duplicate
+    groupService.findOne.mockResolvedValue({ id: 1 });
+    repo.save.mockResolvedValue({ ...mockCategory, category_name: 'Updated' });
+
+    const result = await service.update(1, {
+      category_name: 'Updated',
+      group_id: 1,
+    } as any);
+
+    expect(result.category_name).toEqual('Updated');
+    expect(repo.save).toHaveBeenCalled();
+  });
+});
 
   describe('remove', () => {
     it('should remove category', async () => {

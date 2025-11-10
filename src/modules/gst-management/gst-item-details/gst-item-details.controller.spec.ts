@@ -13,7 +13,7 @@ describe('GstItemDetailsController', () => {
     findAll: jest.fn(() => [{ gst_item_id: 1 }]),
     findOne: jest.fn(id => ({ gst_item_id: id })),
     update: jest.fn((id, dto) => ({ gst_item_id: id, ...dto })),
-    remove: jest.fn(id => undefined),
+   remove: jest.fn(async id => undefined), 
   };
 
   beforeEach(async () => {

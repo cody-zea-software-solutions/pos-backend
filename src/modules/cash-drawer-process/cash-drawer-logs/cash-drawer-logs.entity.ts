@@ -1,15 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity,ManyToOne, JoinColumn,PrimaryGeneratedColumn, Column } from 'typeorm';
+import { User } from '../../users/user.entity';
+import { Shift } from '../../shift/shift.entity';
+import { Counter } from '../../counter/counter.entity';
 
 @Entity('cash_drawer_logs')
 export class CashDrawerLogs {
   @PrimaryGeneratedColumn()
   log_id: number;
 
-  @Column({ unique: true })
-  shift_id: number;
-
-  @Column({ unique: true })
-  counter_id: number;
+  @ManyToOne(() => Counter)
+  @JoinColumn({ name: 'counter_id' })
+  counter: Counter;
+    
+  @ManyToOne(() => Shift)
+  @JoinColumn({ name: 'shift_id' })
+  shift: Shift;
 
   @Column()
   action: string;
@@ -19,9 +24,6 @@ export class CashDrawerLogs {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   action_time: Date;
-
-  @Column({ unique: true })
-  performed_by_user: number;
 
   @Column({ nullable: true })
   reason: string;
@@ -35,6 +37,11 @@ export class CashDrawerLogs {
   @Column({ default: false })
   requires_approval: boolean;
 
-  @Column({ nullable: true })
-  approved_by_user: number;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'performed_by_user' })
+  performed_by_user: User;
+   
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'approved_by_user' })
+  approved_by_user: User;
 }

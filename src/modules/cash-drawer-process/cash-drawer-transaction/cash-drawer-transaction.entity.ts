@@ -1,16 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column,ManyToOne,JoinColumn } from 'typeorm';
 import { TransactionType } from './cash-drawer-transaction-type.enum';
-
-@Entity('cash-drawer')
+import { User } from '../../users/user.entity';
+import { Shift } from '../../shift/shift.entity';
+import { Counter } from '../../counter/counter.entity';
+@Entity('cash_drawer_transactions')
 export class CashDrawerTransaction {
+
   @PrimaryGeneratedColumn()
   drawer_transaction_id: number;
 
-  @Column()
-  counter_id: number;
-
-  @Column()
-  shift_id: number;
+ @ManyToOne(() => Counter)
+  @JoinColumn({ name: 'counter_id' })
+  counter: Counter;
+  
+  @ManyToOne(() => Shift)
+  @JoinColumn({ name: 'shift_id' })
+  shift: Shift;
 
   @Column({
     type: 'enum',
@@ -28,23 +33,29 @@ export class CashDrawerTransaction {
   balance_after: number;
 
   @Column({ nullable: true })
-  reference_number: string;
+  reference_number?: string;
 
   @Column({ type: 'text', nullable: true })
-  reason: string;
+  reason?: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   transaction_time: Date;
 
-  @Column()
-  performed_by_user: number;
+   @ManyToOne(() => User)
+  @JoinColumn({ name: 'performed_by_user' })
+  performed_by_user: User;
 
-  @Column()
-  authorized_by_user: number;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'authorized_by_user' })
+  authorized_by_user: User;
 
   @Column({ default: 'ACTIVE' })
   status: string;
 
   @Column({ type: 'text', nullable: true })
-  notes: string;
+  notes?: string;
+
+
 }
+//manyone-user
+//manytoone - counter

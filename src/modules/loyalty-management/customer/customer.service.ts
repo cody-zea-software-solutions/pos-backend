@@ -7,7 +7,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { LoyaltyLevel } from '../loyalty-levels/loyalty-levels.entity';
 import { Shop } from '../../shop/shop.entity';
 import { Counter } from '../../counter/counter.entity';
-import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
+import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
 
 @Injectable()
 export class CustomerService {

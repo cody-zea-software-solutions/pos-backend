@@ -6,11 +6,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoyaltyPoints } from './loyalty-points.entity';
-import { Transaction } from 'src/modules/pos-transactions/transactions/transaction.entity';
+import { Transaction } from '../../pos-transactions/transactions/transaction.entity';
 import { CustomerService } from '../customer/customer.service';
-import { ShopService } from 'src/modules/shop/shop.service';
-import { CounterService } from 'src/modules/counter/counter.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { ShopService } from '../../shop/shop.service';
+import { CounterService } from '../../counter/counter.service';
+import { UsersService } from '../../users/users.service';
 
 type RecordFromTransactionInput = {
   transaction: Transaction;

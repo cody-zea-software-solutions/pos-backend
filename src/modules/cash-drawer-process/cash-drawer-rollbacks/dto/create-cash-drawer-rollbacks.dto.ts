@@ -1,4 +1,4 @@
-import { IsInt, IsDecimal, IsString, IsBoolean, IsOptional, IsDateString } from 'class-validator';
+import { IsInt, IsDecimal, IsString, IsBoolean, IsOptional, IsDateString,IsNumber } from 'class-validator';
 
 export class CreateCashDrawerRollbackDto {
   @IsInt()
@@ -7,13 +7,13 @@ export class CreateCashDrawerRollbackDto {
   @IsInt()
   shift_id: number;
 
-  @IsDecimal()
+  @IsNumber()
   rollback_amount: number;
 
-  @IsDecimal()
+  @IsNumber()
   balance_before_rollback: number;
 
-  @IsDecimal()
+  @IsNumber()
   balance_after_rollback: number;
 
   @IsString()

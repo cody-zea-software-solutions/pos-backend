@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn,OneToMany } from 'typeorm';
 import { Customer } from '../customer/customer.entity'; 
-import { Promotion } from 'src/modules/promotion/promotion.entity';
+import { Promotion } from '../../promotion/promotion.entity';
 
 @Entity('loyalty_levels')
 export class LoyaltyLevel {

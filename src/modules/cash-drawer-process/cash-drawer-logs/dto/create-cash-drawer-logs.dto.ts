@@ -13,9 +13,6 @@ export class CreateCashDrawerLogsDto {
   @IsNumber({ maxDecimalPlaces: 2 })
   amount: number;
 
-  @IsInt()
-  performed_by_user: number;
-
   @IsOptional()
   @IsString()
   reason?: string;
@@ -31,8 +28,11 @@ export class CreateCashDrawerLogsDto {
   @IsOptional()
   @IsBoolean()
   requires_approval?: boolean;
+  
+  @IsInt()
+  performed_by_user: number;
 
   @IsOptional()
   @IsInt()
-  approved_by_user?: number;
+  approved_by_user: number;
 }

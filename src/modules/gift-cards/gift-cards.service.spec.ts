@@ -79,18 +79,14 @@ describe('GiftCardsService', () => {
     expect(repo.save).toHaveBeenCalled();
   });
 
-  it('should throw ConflictException if card number exists', async () => {
-    repo.findOne.mockResolvedValue(mockGiftCard);
-    await expect(
-      service.create({
-        card_number: 'ABC123',
-        initial_value: 100,
-        current_balance: 100,
-        issue_date: new Date(),
-        expiry_date: new Date(),
-      }),
-    ).rejects.toThrow(ConflictException);
-  });
+  it('should throw ConflictException if updating with duplicate card_number', async () => {
+  repo.findOne
+    .mockResolvedValueOnce(mockGiftCard) // findOne(id)
+    .mockResolvedValueOnce(mockGiftCard) // internal relation fetch
+    .mockResolvedValueOnce({ ...mockGiftCard, gift_card_id: 2 }); // duplicate
+
+  await expect(service.update(1, { card_number: 'ABC123' })).rejects.toThrow(ConflictException);
+});
 
   // ---------------------------
   // findAll()

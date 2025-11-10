@@ -7,8 +7,8 @@ import { CounterService } from '../../counter/counter.service';
 import { CustomerService } from '../../loyalty-management/customer/customer.service';
 import { UsersService } from '../../users/users.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { LoyaltyLevelsService } from 'src/modules/loyalty-management/loyalty-levels/loyalty-levels.service';
-import { LoyaltyPointsService } from 'src/modules/loyalty-management/loyalty-points/loyalty-points.service';
+import { LoyaltyLevelsService } from '../../loyalty-management/loyalty-levels/loyalty-levels.service';
+import { LoyaltyPointsService } from '../../loyalty-management/loyalty-points/loyalty-points.service';
 
 @Injectable()
 export class TransactionsService {

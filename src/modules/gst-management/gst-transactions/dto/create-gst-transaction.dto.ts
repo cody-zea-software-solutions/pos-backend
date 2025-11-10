@@ -52,7 +52,7 @@ export class CreateGstTransactionDto {
   is_reverse_charge: boolean;
 
   @IsString()
-  transaction_date: String;
+  transaction_date: Date;
 
   @IsEnum(InvoiceType)
   invoice_type: InvoiceType;
