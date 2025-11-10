@@ -32,6 +32,8 @@ import { RefundModule } from './modules/refund-process/refund/refund.module';
 import { RefundItemsModule } from './modules/refund-process/refund-items/refund-items.module';
 import { RefundApprovalsModule } from './modules/refund-process/refund-approvals/refund-approvals.module';
 import { ServicesModule } from './modules/service-management/services/services.module';
+import { ServiceCategoriesModule } from './modules/service-management/service-categories/service-categories.module';//new 
+import { ServiceResourcesModule } from './modules/service-management/service-resources/service-resources.module';
 import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
 import { ProductBundlesModule } from './modules/product-bundle-management/product-bundles/product-bundles.module';
 import { BundleItemsModule } from './modules/product-bundle-management/bundle-items/bundle-items.module';
@@ -48,7 +50,7 @@ import { BatchMovementsModule } from './modules/inventory/batch-movements/batch-
 import { GstRatesModule } from './modules/gst-management/gst-rates/gst-rates.module';
 import { GstTransactionsModule } from './modules/gst-management/gst-transactions/gst-transactions.module';
 import { GstItemDetailsModule } from './modules/gst-management/gst-item-details/gst-item-details.module';
-import { GstReturnModule } from './modules/gst-management/gst-return/gst-return.module';  //new update 
+import { GstReturnModule } from './modules/gst-management/gst-return/gst-return.module';  
 import { ConsignmentStockModule } from './modules/inventory/consignment-stock/consignment-stock.module';
 import { ConsignmentSettlementsModule } from './modules/inventory/consignment-settlements/consignment-settlements.module';
 import { InventoryReportsModule } from './modules/inventory/inventory-reports/inventory-reports.module';
@@ -175,7 +177,11 @@ import { CashDrawerLogsModule } from './modules/cash-drawer-process/cash-drawer-
 
    CashDrawerRollbacksModule,
 
-   CashDrawerLogsModule
+   CashDrawerLogsModule,
+
+   ServiceCategoriesModule,
+
+   ServiceResourcesModule
   ],
 
 })
