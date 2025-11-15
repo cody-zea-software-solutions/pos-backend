@@ -33,10 +33,14 @@ import { RefundItemsModule } from './modules/refund-process/refund-items/refund-
 import { RefundApprovalsModule } from './modules/refund-process/refund-approvals/refund-approvals.module';
 import { ServicesModule } from './modules/service-management/services/services.module';
 import { ServiceCategoriesModule } from './modules/service-management/service-categories/service-categories.module';//new 
-import { ServiceResourcesModule } from './modules/service-management/service-resources/service-resources.module';
+import { ServiceResourcesModule } from './modules/service-management/service-resources/service-resources.module';//
+import { ServiceResourcesRequirementsModule } from './modules/service-management/service-resource-requirements/service-resource-requirements.module';//
+import { ServiceTransactionModule } from './modules/service-management/service-transactions/service-transactions.module';//
 import { GiftCardsModule } from './modules/gift-cards/gift-cards.module';
 import { ProductBundlesModule } from './modules/product-bundle-management/product-bundles/product-bundles.module';
 import { BundleItemsModule } from './modules/product-bundle-management/bundle-items/bundle-items.module';
+import { BundleTransactionModule } from './modules/product-bundle-management/bundle-transactions/bundle-transactions.module';//
+import { BundleTransactionItemsModule } from './modules/product-bundle-management/bundle-transaction-items/bundle-transaction-items.module';//
 import { SubscriptionPlanModule } from './modules/subscription-plan/subscription-plan.module';
 import { PurchaseOrdersModule } from './modules/inventory/purchase-orders/purchase-orders.module';
 import { PurchaseOrderItemsModule } from './modules/inventory/purchase-order-items/purchase-order-items.module';
@@ -181,7 +185,15 @@ import { CashDrawerLogsModule } from './modules/cash-drawer-process/cash-drawer-
 
    ServiceCategoriesModule,
 
-   ServiceResourcesModule
+   ServiceResourcesModule,
+
+   ServiceResourcesRequirementsModule,
+
+   ServiceTransactionModule,
+
+   BundleTransactionModule,
+
+   BundleTransactionItemsModule,
   ],
 
 })
