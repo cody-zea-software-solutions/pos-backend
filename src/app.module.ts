@@ -61,6 +61,7 @@ import { InventoryReportsModule } from './modules/inventory/inventory-reports/in
 import { CashDrawerTransactionModule } from './modules/cash-drawer-process/cash-drawer-transaction/cash-drawer-transaction.module';
 import { CashDrawerRollbacksModule } from './modules/cash-drawer-process/cash-drawer-rollbacks/cash-drawer-rollbacks.module';
 import { CashDrawerLogsModule } from './modules/cash-drawer-process/cash-drawer-logs/cash-drawer-logs.module';
+import { KafkaModule } from './kafka/kafka.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -194,6 +195,8 @@ import { CashDrawerLogsModule } from './modules/cash-drawer-process/cash-drawer-
    BundleTransactionModule,
 
    BundleTransactionItemsModule,
+
+   KafkaModule,
   ],
 
 })
